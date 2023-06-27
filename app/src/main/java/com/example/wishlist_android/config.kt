@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.dotenv
 
 data class ApiConfig(val baseURL: String)
 
-data class SessionConfig(val localStorageKey: String)
+data class SessionConfig(val tokenKey: String, val sharedPreferencesKey: String)
 
 data class Config(val api: ApiConfig, val session: SessionConfig)
 
@@ -18,6 +18,7 @@ val config = Config(
         baseURL = dotenv["API_BASE_URL"]
     ),
     session = SessionConfig(
-        localStorageKey = "token"
+        tokenKey = "token",
+        sharedPreferencesKey = "MyPreferences",
     )
 )

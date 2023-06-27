@@ -22,5 +22,5 @@ object RetrofitHelper {
 
 interface WishApi {
     @POST("/sign-in")
-    suspend fun getQuotes(@Body loginRequest: LoginRequest): Response<LoginResult>
+    suspend fun signIn(@Body loginRequest: LoginRequest): Response<LoginResult>
 }
