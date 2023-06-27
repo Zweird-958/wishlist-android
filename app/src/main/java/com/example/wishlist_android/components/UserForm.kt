@@ -8,17 +8,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.DelicateCoroutinesApi
 
 @SuppressLint("ShowToast")
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun UserForm(onSubmit: (String, String) -> Unit, buttonTitle: String, title: String) {
-//    val contextForToast = LocalContext.current.applicationContext
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val context = LocalContext.current
 
     Form(
         title = title,
@@ -32,10 +29,10 @@ fun UserForm(onSubmit: (String, String) -> Unit, buttonTitle: String, title: Str
             initialValue = email,
             onValueChange = { email = it }
         )
-        FormField(
-            label = "Mot de passe",
+        PasswordTextField(
             initialValue = password,
-            onValueChange = { password = it }
+            onValueChange = { password = it },
+            label = "Mot de passe"
         )
     }
 }
