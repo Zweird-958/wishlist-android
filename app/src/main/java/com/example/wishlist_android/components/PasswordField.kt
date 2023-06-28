@@ -2,7 +2,8 @@ package com.example.wishlist_android.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,7 +35,7 @@ fun PasswordTextField(
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             val icon =
-                if (passwordVisibility) Icons.Filled.Star else Icons.Filled.Star
+                if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
             IconButton(
                 onClick = { passwordVisibility = !passwordVisibility },
                 content = { Icon(icon, contentDescription = "Toggle password visibility") }
