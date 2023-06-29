@@ -23,4 +23,7 @@ object RetrofitHelper {
 interface WishApi {
     @POST("/sign-in")
     suspend fun signIn(@Body loginRequest: LoginRequest): Response<LoginResult>
+
+    @POST("/sign-up")
+    suspend fun signUp(@Body loginRequest: LoginRequest): Response<LoginResult>
 }

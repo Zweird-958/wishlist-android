@@ -2,4 +2,10 @@
     <string name="app_name">wishlist-android</string>
     <string name="sign_in">Se connecter</string>
     <string name="sign_in_title">Connexion</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="sign_up_title">Inscription</string>
+    <string name="already_account">Vous avez déjà un compte ?</string>
+    <string name="click_sign_in">Connectez-vous !</string>
+    <string name="new_account">Vous êtes nouveau ?</string>
+    <string name="click_sign_up">Inscrivez-vous !</string>
 </resources>

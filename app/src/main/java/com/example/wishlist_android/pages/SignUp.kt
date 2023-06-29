@@ -15,8 +15,6 @@ import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.components.UserForm
-import com.example.wishlist_android.token
-import com.example.wishlist_android.utils.saveToken
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,12 +22,12 @@ import kotlinx.coroutines.launch
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun SignIn(navController: NavController) {
+fun SignUp(navController: NavController) {
     val context = LocalContext.current
 
     UserForm(
-        title = stringResource(R.string.sign_in_title),
-        buttonTitle = stringResource(R.string.sign_in),
+        title = stringResource(R.string.sign_up_title),
+        buttonTitle = stringResource(R.string.sign_up),
         onSubmit = { email, password ->
 
             val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
@@ -37,7 +35,7 @@ fun SignIn(navController: NavController) {
 
                 try {
 
-                    val response = wishApi.signIn(
+                    val response = wishApi.signUp(
                         LoginRequest(
                             email = email,
                             password = password
@@ -45,11 +43,8 @@ fun SignIn(navController: NavController) {
                     )
 
                     if (response.isSuccessful) {
-                        val result = response.body()?.result
-                        if (result != null) {
-                            saveToken(context, result)
-                            token = result
-                        }
+
+
                     } else {
 
                         // Get Error
@@ -70,22 +65,24 @@ fun SignIn(navController: NavController) {
 
         }
     ) {
+
         val annotatedString = buildAnnotatedString {
-            append(stringResource(R.string.new_account))
+            append(stringResource(R.string.already_account))
             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                append(" ${stringResource(R.string.click_sign_up)}")
+                append(" ${stringResource(R.string.click_sign_in)}")
             }
         }
 
+
+
         Text(
             text = annotatedString,
-            modifier = Modifier.clickable {
-                navController.navigate("signUp") {
-                    popUpTo("signIn") {
-                        inclusive = true
+            modifier = Modifier
+                .clickable {
+                    navController.navigate("signIn") {
+                        popUpTo("signUp") { inclusive = true }
                     }
-                }
-            },
+                },
         )
     }
 }
