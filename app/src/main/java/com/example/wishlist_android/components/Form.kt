@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,11 +29,15 @@ fun Form(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = title, fontSize = 24.sp)
+        Text(text = title, fontSize = 24.sp, color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.height(16.dp))
         children()
         Spacer(modifier = Modifier.height(16.dp))
-        Button(modifier = Modifier.fillMaxWidth(), onClick = onSubmit) {
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+            onClick = onSubmit
+        ) {
             Text(text = buttonTitle)
         }
     }
