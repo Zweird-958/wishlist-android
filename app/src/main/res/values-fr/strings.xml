@@ -8,4 +8,7 @@
     <string name="click_sign_in">Connectez-vous !</string>
     <string name="new_account">Vous êtes nouveau ?</string>
     <string name="click_sign_up">Inscrivez-vous !</string>
+    <string name="invalid_credentials">Invalid Credentials!</string>
+    <string name="api_error">Something wrong retry please!</string>
+    <string name="sign_up_success">Votre compte à été crée avec succès!</string>
 </resources>

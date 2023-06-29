@@ -1,4 +1,5 @@
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,6 +17,7 @@ import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.components.UserForm
 import com.example.wishlist_android.token
+import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -26,13 +28,17 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignIn(navController: NavController) {
     val context = LocalContext.current
+    val toast =
+        Toast.makeText(context, stringResource(R.string.invalid_credentials), Toast.LENGTH_SHORT)
+    val timeoutToast =
+        Toast.makeText(context, stringResource(R.string.api_error), Toast.LENGTH_SHORT)
+    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
 
     UserForm(
         title = stringResource(R.string.sign_in_title),
         buttonTitle = stringResource(R.string.sign_in),
         onSubmit = { email, password ->
 
-            val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
             GlobalScope.launch {
 
                 try {
@@ -43,6 +49,7 @@ fun SignIn(navController: NavController) {
                             password = password
                         )
                     )
+
 
                     if (response.isSuccessful) {
                         val result = response.body()?.result
@@ -58,12 +65,14 @@ fun SignIn(navController: NavController) {
 
                         if (status == 401) {
                             Log.d("ayush: ", "401")
+                            toast.show()
                         }
 
 //                        response.errorBody()?.string()
                     }
                 } catch (e: Exception) {
-                    Log.d("ayush: ", e.toString())
+                    Log.d("error: ", e.toString())
+                    timeoutToast.show()
                 }
 
             }
@@ -77,14 +86,11 @@ fun SignIn(navController: NavController) {
             }
         }
 
+
         Text(
             text = annotatedString,
             modifier = Modifier.clickable {
-                navController.navigate("signUp") {
-                    popUpTo("signIn") {
-                        inclusive = true
-                    }
-                }
+                navigateAndClearHistory(navController, "signUp", "signIn")
             },
         )
     }

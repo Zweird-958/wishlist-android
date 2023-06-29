@@ -2,7 +2,6 @@ package com.example.wishlist_android.components
 
 import Form
 import FormField
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,10 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.DelicateCoroutinesApi
 
-@SuppressLint("ShowToast")
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun UserForm(
     onSubmit: (String, String) -> Unit,

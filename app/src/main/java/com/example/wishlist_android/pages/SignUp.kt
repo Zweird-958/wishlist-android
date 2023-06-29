@@ -1,4 +1,5 @@
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,15 +16,21 @@ import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.components.UserForm
+import com.example.wishlist_android.utils.navigateAndClearHistory
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun SignUp(navController: NavController) {
     val context = LocalContext.current
+    val successToast =
+        Toast.makeText(context, stringResource(R.string.sign_up_success), Toast.LENGTH_SHORT)
+
 
     UserForm(
         title = stringResource(R.string.sign_up_title),
@@ -43,19 +50,10 @@ fun SignUp(navController: NavController) {
                     )
 
                     if (response.isSuccessful) {
-
-
-                    } else {
-
-                        // Get Error
-
-                        val status = response.code()
-
-                        if (status == 401) {
-                            Log.d("ayush: ", "401")
+                        withContext(Dispatchers.Main) {
+                            navigateAndClearHistory(navController, "signIn", "signUp")
                         }
-
-//                        response.errorBody()?.string()
+                        successToast.show()
                     }
                 } catch (e: Exception) {
                     Log.d("ayush: ", e.toString())
@@ -79,9 +77,8 @@ fun SignUp(navController: NavController) {
             text = annotatedString,
             modifier = Modifier
                 .clickable {
-                    navController.navigate("signIn") {
-                        popUpTo("signUp") { inclusive = true }
-                    }
+                    navigateAndClearHistory(navController, "signIn", "signUp")
+
                 },
         )
     }
