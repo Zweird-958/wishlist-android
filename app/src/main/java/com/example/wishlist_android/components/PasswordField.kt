@@ -7,8 +7,11 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,11 +35,18 @@ fun PasswordTextField(
         value = initialValue,
         onValueChange = onValueChange,
         label = { Text(label) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
+        ),
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             val icon =
                 if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
             IconButton(
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
                 onClick = { passwordVisibility = !passwordVisibility },
                 content = { Icon(icon, contentDescription = "Toggle password visibility") }
             )
