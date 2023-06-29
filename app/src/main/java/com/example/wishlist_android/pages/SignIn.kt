@@ -1,6 +1,8 @@
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.example.wishlist_android.R
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.LoginRequest
@@ -18,8 +20,8 @@ fun SignIn() {
     val context = LocalContext.current
 
     UserForm(
-        title = "Connexion",
-        buttonTitle = "Se connecter",
+        title = stringResource(R.string.sign_in_title),
+        buttonTitle = stringResource(R.string.sign_in),
         onSubmit = { email, password ->
 
             val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)

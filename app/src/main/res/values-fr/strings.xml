@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">wishlist-android</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="sign_in_title">Connexion</string>
+</resources>
