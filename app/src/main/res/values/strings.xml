@@ -2,13 +2,13 @@
     <string name="app_name">wishlist-android</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_title">Sign In</string>
-    <string name="sign_up">S\'inscrire</string>
-    <string name="sign_up_title">Inscription</string>
-    <string name="already_account">Vous avez déjà un compte ? Connectez-vous</string>
-    <string name="click_sign_in">Connectez-vous</string>
-    <string name="new_account">Vous avez déjà un compte ?</string>
-    <string name="click_sign_up">Inscrivez-vous !</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_title">Sign Up</string>
+    <string name="already_account">Already register ?</string>
+    <string name="click_sign_in">Login</string>
+    <string name="new_account">Are you new ?</string>
+    <string name="click_sign_up">Register !</string>
     <string name="invalid_credentials">Invalid Credentials!</string>
     <string name="api_error">Something wrong retry please!</string>
-    <string name="sign_up_success">Votre compte à été crée avec succès!</string>
+    <string name="sign_up_success">Your account has been successfully created!</string>
 </resources>
