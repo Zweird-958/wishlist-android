@@ -1,3 +1,4 @@
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.components.UserForm
 import com.example.wishlist_android.token
+import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -59,16 +61,9 @@ fun SignIn(navController: NavController) {
                         }
                     } else {
 
-                        // Get Error
+                        Looper.prepare()
+                        handleErrors(response, navController, "signIn")
 
-                        val status = response.code()
-
-                        if (status == 401) {
-                            Log.d("ayush: ", "401")
-                            toast.show()
-                        }
-
-//                        response.errorBody()?.string()
                     }
                 } catch (e: Exception) {
                     Log.d("error: ", e.toString())

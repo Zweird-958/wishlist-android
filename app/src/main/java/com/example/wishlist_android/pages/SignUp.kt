@@ -1,3 +1,4 @@
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.components.UserForm
+import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -54,6 +56,9 @@ fun SignUp(navController: NavController) {
                             navigateAndClearHistory(navController, "signIn", "signUp")
                         }
                         successToast.show()
+                    } else {
+                        Looper.prepare()
+                        handleErrors(response, navController, "signUp")
                     }
                 } catch (e: Exception) {
                     Log.d("ayush: ", e.toString())

@@ -1,6 +1,7 @@
 package com.example.wishlist_android.pages
 
 import android.annotation.SuppressLint
+import android.os.Looper
 import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.getToken
+import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,6 @@ import kotlinx.coroutines.withContext
 fun LoadingPage(navController: NavController) {
     val context = LocalContext.current
     val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
-
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
 
@@ -49,21 +50,15 @@ fun LoadingPage(navController: NavController) {
                     if (response.isSuccessful) {
                         val result = response.body()?.result
                         Log.d("Success: ", "$result")
+
+                        withContext(Dispatchers.Main) {
+                            navigateAndClearHistory(navController, "signIn", "loading")
+                        }
                     } else {
 
-                        // Get Error
+                        Looper.prepare()
+                        handleErrors(response, navController, "loading")
 
-                        val status = response.code()
-
-                        if (status == 403) {
-                            withContext(Dispatchers.Main) {
-                                navigateAndClearHistory(navController, "signIn", "loading")
-
-                            }
-                            Log.d("redirect", "redirect to signIn")
-                        }
-
-//                        response.errorBody()?.string()
                     }
 
                     Log.d("LoadingPage", "response: $response")
