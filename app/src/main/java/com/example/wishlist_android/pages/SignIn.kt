@@ -89,9 +89,12 @@ fun SignIn(navController: NavController) {
 
         Text(
             text = annotatedString,
-            modifier = Modifier.clickable {
-                navigateAndClearHistory(navController, "signUp", "signIn")
-            },
+            modifier = Modifier
+                .clickable {
+                    navigateAndClearHistory(navController, "signUp", "signIn")
+                },
         )
+
+
     }
 }

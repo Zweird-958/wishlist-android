@@ -1,3 +1,3 @@
 package com.example.wishlist_android
 
-var token: String? = null
+var token: String = ""

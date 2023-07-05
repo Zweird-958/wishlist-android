@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.wishlist_android.pages.LoadingPage
 import com.example.wishlist_android.ui.theme.WishlistandroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "signUp"
+                        startDestination = "loading"
                     ) {
                         composable("signIn") {
                             SignIn(navController = navController)
@@ -36,6 +37,10 @@ class MainActivity : ComponentActivity() {
 
                         composable("signUp") {
                             SignUp(navController = navController)
+                        }
+
+                        composable("loading") {
+                            LoadingPage(navController = navController)
                         }
                     }
                 }

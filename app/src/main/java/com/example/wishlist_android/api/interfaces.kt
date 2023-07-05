@@ -2,12 +2,16 @@ package com.example.wishlist_android.api
 
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.api.classes.LoginResult
+import com.example.wishlist_android.api.classes.WishResult
 import com.example.wishlist_android.config
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
+
 
 object RetrofitHelper {
 
@@ -21,9 +25,13 @@ object RetrofitHelper {
 }
 
 interface WishApi {
+
     @POST("/sign-in")
     suspend fun signIn(@Body loginRequest: LoginRequest): Response<LoginResult>
 
     @POST("/sign-up")
     suspend fun signUp(@Body loginRequest: LoginRequest): Response<LoginResult>
+
+    @GET("/wish")
+    suspend fun getWish(@Header("Authorization") authorization: String): Response<WishResult>
 }
