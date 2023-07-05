@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wishlist_android.pages.LoadingPage
+import com.example.wishlist_android.pages.Wishlist
 import com.example.wishlist_android.ui.theme.WishlistandroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +42,10 @@ class MainActivity : ComponentActivity() {
 
                         composable("loading") {
                             LoadingPage(navController = navController)
+                        }
+
+                        composable("wishlist") {
+                            Wishlist(navController = navController)
                         }
                     }
                 }

@@ -21,6 +21,7 @@ import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.getToken
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
+import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -49,10 +50,13 @@ fun LoadingPage(navController: NavController) {
 
                     if (response.isSuccessful) {
                         val result = response.body()?.result
-                        Log.d("Success: ", "$result")
+
+                        if (result != null) {
+                            wishlist = result
+                        }
 
                         withContext(Dispatchers.Main) {
-                            navigateAndClearHistory(navController, "signIn", "loading")
+                            navigateAndClearHistory(navController, "wishlist", "loading")
                         }
                     } else {
 
