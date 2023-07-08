@@ -11,4 +11,5 @@
     <string name="invalid_credentials">Identifiants invalides!</string>
     <string name="api_error">Il y a eu une erreur veuillez réessayer!</string>
     <string name="sign_up_success">Votre compte à été créé avec succès!</string>
+    <string name="buy">Acheter</string>
 </resources>
