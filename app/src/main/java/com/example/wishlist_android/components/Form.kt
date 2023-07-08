@@ -27,13 +27,5 @@ fun Form(
         children()
         Spacer(modifier = Modifier.height(16.dp))
         RoundedButton(buttonTitle = buttonTitle, onSubmit = onSubmit)
-//        Button(
-//            modifier = Modifier.fillMaxWidth(),
-//            shape = RoundedCornerShape(12.dp),
-//            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-//            onClick = onSubmit
-//        ) {
-//            Text(text = buttonTitle)
-//        }
     }
 }
