@@ -58,6 +58,7 @@ fun SignIn(navController: NavController) {
                         if (result != null) {
                             saveToken(context, result)
                             token = result
+                            navigateAndClearHistory(navController, "wishlist", "signIn")
                         }
                     } else {
 
