@@ -22,8 +22,10 @@ import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -58,7 +60,9 @@ fun SignIn(navController: NavController) {
                         if (result != null) {
                             saveToken(context, result)
                             token = result
-                            navigateAndClearHistory(navController, "wishlist", "signIn")
+                            withContext(Dispatchers.Main) {
+                                navigateAndClearHistory(navController, "wishlist", "signIn")
+                            }
                         }
                     } else {
 
