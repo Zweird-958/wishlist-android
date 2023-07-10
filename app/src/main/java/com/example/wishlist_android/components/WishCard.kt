@@ -59,7 +59,7 @@ fun WishCard(wish: Wish) {
             Column(modifier = Modifier.padding(start = 16.dp)) {
                 Text(text = wish.name)
                 Text(text = wish.currency)
-                Text(text = wish.price.toString())
+                Text(text = wish.priceFormatted)
                 RoundedButton(
                     buttonTitle = stringResource(R.string.buy),
                     onSubmit = { println("fsfs") })

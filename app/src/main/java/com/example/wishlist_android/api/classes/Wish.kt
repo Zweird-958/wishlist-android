@@ -6,6 +6,7 @@ data class Wish(
     val image: String,
     val currency: String,
     val price: Float,
+    val priceFormatted: String,
     val link: String,
     val purchased: Boolean,
     val id: Int,
