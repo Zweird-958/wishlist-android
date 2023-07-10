@@ -14,3 +14,8 @@ val White = Color(0xFFFDFDFF)
 val Pink = Color(0xFFF9CEDE)
 val Yellow = Color(0xFFFAEED2)
 val Grey = Color(0xFFD8DDE9)
+
+val DarkGrey = Color(0xFF1B2223)
+val LightGrey = Color(0xFF3A4F50)
+val Cyan = Color(0xFF0EF6CC)
+val DarkWhite = Color(0xFFF4FEFD)

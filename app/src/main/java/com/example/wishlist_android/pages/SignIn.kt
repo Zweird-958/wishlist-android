@@ -32,8 +32,6 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SignIn(navController: NavController) {
     val context = LocalContext.current
-    val toast =
-        Toast.makeText(context, stringResource(R.string.invalid_credentials), Toast.LENGTH_SHORT)
     val timeoutToast =
         Toast.makeText(context, stringResource(R.string.api_error), Toast.LENGTH_SHORT)
     val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
