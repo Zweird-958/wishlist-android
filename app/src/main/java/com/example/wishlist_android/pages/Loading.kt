@@ -13,8 +13,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.wishlist_android.api.RetrofitHelper
-import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
@@ -29,7 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoadingPage(navController: NavController) {
     val context = LocalContext.current
-    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
+
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
 
