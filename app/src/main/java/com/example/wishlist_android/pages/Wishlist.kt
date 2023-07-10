@@ -1,7 +1,11 @@
 package com.example.wishlist_android.pages
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -9,14 +13,15 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.components.WishCard
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.wishlist
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Wishlist(navController: NavController) {
     val wishlistState = remember { mutableStateListOf<Wish>() }
@@ -39,20 +44,17 @@ fun Wishlist(navController: NavController) {
         refreshing = false
     }
 
+    val pullRefreshState = rememberPullRefreshState(refreshing, { refreshing = true })
 
-
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(refreshing),
-        onRefresh = { refreshing = true },
-    ) {
-        Column {
-            LazyColumn {
-                wishlistState.forEach { wish ->
-                    item {
-                        WishCard(wish = wish)
-                    }
+    Box(Modifier.pullRefresh(pullRefreshState)) {
+        LazyColumn {
+            wishlistState.forEach { wish ->
+                item {
+                    WishCard(wish = wish)
                 }
             }
         }
+
+        PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
     }
 }
