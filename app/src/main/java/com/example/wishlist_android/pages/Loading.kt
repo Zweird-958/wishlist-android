@@ -1,8 +1,6 @@
 package com.example.wishlist_android.pages
 
 import android.annotation.SuppressLint
-import android.os.Looper
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -18,16 +16,13 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.token
+import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
-import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
@@ -46,32 +41,12 @@ fun LoadingPage(navController: NavController) {
 
                 try {
 
-                    val response = wishApi.getWish(token)
+                    fetchWishlist(navController, "loading", true)
 
-                    if (response.isSuccessful) {
-                        val result = response.body()?.result
-
-                        if (result != null) {
-                            wishlist = result
-                        }
-
-                        withContext(Dispatchers.Main) {
-                            navigateAndClearHistory(navController, "wishlist", "loading")
-                        }
-                    } else {
-
-                        Looper.prepare()
-                        handleErrors(response, navController, "loading")
-
-                    }
-
-                    Log.d("LoadingPage", "response: $response")
                 } catch (e: Exception) {
                     println(e)
                 }
             }
-
-//            navigateAndClearHistory(navController, "signUp", "loading")
         } else {
             navigateAndClearHistory(navController, "signIn", "loading")
         }
