@@ -1,10 +1,13 @@
 package com.example.wishlist_android.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +31,11 @@ fun WishCard(wish: Wish) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .height(IntrinsicSize.Min)
+        ) {
 
             Box(
                 modifier = Modifier
@@ -56,9 +63,14 @@ fun WishCard(wish: Wish) {
                 )
             }
 
-            Column(modifier = Modifier.padding(start = 16.dp)) {
+
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(text = wish.name)
-                Text(text = wish.currency)
                 Text(text = wish.priceFormatted)
                 RoundedButton(
                     buttonTitle = stringResource(R.string.buy),
@@ -66,6 +78,7 @@ fun WishCard(wish: Wish) {
 
 
             }
+
 
         }
     }
