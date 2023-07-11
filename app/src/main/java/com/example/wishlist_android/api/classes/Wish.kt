@@ -7,7 +7,7 @@ data class Wish(
     val currency: String,
     val price: Float,
     val priceFormatted: String,
-    val link: String,
+    val link: String?,
     val purchased: Boolean,
     val id: Int,
     val createdAt: String,

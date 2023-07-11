@@ -20,14 +20,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.utils.openWebPage
 
 @Composable
 fun WishCard(wish: Wish) {
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,9 +85,15 @@ fun WishCard(wish: Wish) {
             ) {
                 Text(text = wish.name)
                 Text(text = wish.priceFormatted)
-                RoundedButton(
-                    buttonTitle = stringResource(R.string.buy),
-                    onSubmit = { println("fsfs") })
+
+                if (wish.link != null) {
+                    RoundedButton(
+                        buttonTitle = stringResource(R.string.buy),
+                        onSubmit = { openWebPage(context, wish.link) },
+                    )
+                } else {
+                    Box(modifier = Modifier.fillMaxWidth())
+                }
 
 
             }
