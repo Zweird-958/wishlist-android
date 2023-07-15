@@ -1,4 +1,5 @@
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -14,7 +15,8 @@ import androidx.compose.ui.Modifier
 fun FormField(
     label: String,
     initialValue: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     val value = remember { mutableStateOf(initialValue) }
 
@@ -25,6 +27,7 @@ fun FormField(
         colors = TextFieldDefaults.outlinedTextFieldColors(
             unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
         ),
+        keyboardOptions = keyboardOptions,
         onValueChange = {
             value.value = it
             onValueChange(it)
