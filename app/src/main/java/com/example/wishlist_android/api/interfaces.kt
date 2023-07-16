@@ -4,13 +4,13 @@ import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.api.classes.LoginResult
 import com.example.wishlist_android.api.classes.WishResult
 import com.example.wishlist_android.config
+import com.example.wishlist_android.token
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import java.util.Locale
 
@@ -18,14 +18,16 @@ import java.util.Locale
 object OkHttpClientHelper {
 
     fun getInstance(): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor { chain ->
-            val language: String = Locale.getDefault().language
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                val language: String = Locale.getDefault().language
 
-            val request = chain.request().newBuilder()
-                .addHeader("Accept-Language", language)
-                .build()
-            chain.proceed(request)
-        }.build()
+                val request = chain.request().newBuilder()
+                    .addHeader("Accept-Language", language)
+                    .addHeader("Authorization", token)
+                    .build()
+                chain.proceed(request)
+            }.build()
     }
 }
 
@@ -50,8 +52,5 @@ interface WishApi {
     suspend fun signUp(@Body loginRequest: LoginRequest): Response<LoginResult>
 
     @GET("/wish")
-    suspend fun getWish(
-        @Header("Authorization") authorization: String,
-//        @Header("Accept-Language") language: String
-    ): Response<WishResult>
+    suspend fun getWish(): Response<WishResult>
 }

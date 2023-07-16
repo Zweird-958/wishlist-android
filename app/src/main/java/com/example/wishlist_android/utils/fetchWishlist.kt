@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.navigation.NavController
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
-import com.example.wishlist_android.token
 import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +15,7 @@ suspend fun fetchWishlist(
     navigateToWishlist: Boolean = false
 ) {
     val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
-    val response = wishApi.getWish(token)
+    val response = wishApi.getWish()
 
     if (response.isSuccessful) {
         val result = response.body()?.result
