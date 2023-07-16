@@ -2,7 +2,9 @@ package com.example.wishlist_android.components
 
 import Form
 import FormField
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,9 +15,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -28,6 +32,7 @@ import com.example.wishlist_android.R
 import com.example.wishlist_android.models.UserFormModel
 import com.example.wishlist_android.providers.UserFormProvider
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserForm(
     onSubmit: (String, String) -> Unit,
@@ -52,57 +57,65 @@ fun UserForm(
         if (!userFormModel.checkFormValidity()) {
             return@handleSubmit
         }
-        
+
         onSubmit(email, password)
     }
 
 
-
-    Column(
+    Box(
         modifier = Modifier
-            .padding(32.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Form(
-            title = title,
-            buttonTitle = buttonTitle,
-            buttonEnabled = userFormModel.isFormValid,
-            onSubmit = {
-                handleSubmit()
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                }
             }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(32.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            FormField(
-                modifier = Modifier.focusRequester(emailFocusRequester),
-                label = stringResource(R.string.email),
-                initialValue = email,
-                onValueChange = { userFormModel.updateEmail(it) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    capitalization = KeyboardCapitalization.None,
-                    autoCorrect = false,
-                    imeAction = ImeAction.Done,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { passwordFocusRequester.requestFocus() },
-                ),
-                error = formUiState.emailError,
-            )
-            PasswordTextField(
-                modifier = Modifier.focusRequester(passwordFocusRequester),
-                initialValue = password,
-                onValueChange = { userFormModel.updatePassword(it) },
-                label = stringResource(R.string.password),
-                error = formUiState.passwordError,
-                keyboardActions = KeyboardActions(
-                    onDone = { handleSubmit() },
-                ),
-            )
+            Form(
+                title = title,
+                buttonTitle = buttonTitle,
+                buttonEnabled = userFormModel.isFormValid,
+                onSubmit = {
+                    handleSubmit()
+                }
+            ) {
+                FormField(
+                    modifier = Modifier.focusRequester(emailFocusRequester),
+                    label = stringResource(R.string.email),
+                    initialValue = email,
+                    onValueChange = { userFormModel.updateEmail(it) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        capitalization = KeyboardCapitalization.None,
+                        autoCorrect = false,
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { passwordFocusRequester.requestFocus() },
+                    ),
+                    error = formUiState.emailError,
+                )
+                PasswordTextField(
+                    modifier = Modifier.focusRequester(passwordFocusRequester),
+                    initialValue = password,
+                    onValueChange = { userFormModel.updatePassword(it) },
+                    label = stringResource(R.string.password),
+                    error = formUiState.passwordError,
+                    keyboardActions = KeyboardActions(
+                        onDone = { handleSubmit() },
+                    ),
+                )
 
+            }
+            children()
         }
-        children()
     }
-
 
 }
