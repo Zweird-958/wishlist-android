@@ -23,6 +23,8 @@ private val DarkColorScheme = darkColorScheme(
     background = DarkGrey,
     onBackground = LightGrey,
 
+    error = ErrorColor,
+
     )
 
 private val LightColorScheme = lightColorScheme(
@@ -37,6 +39,8 @@ private val LightColorScheme = lightColorScheme(
 
     background = White,
     onBackground = DarkWhite,
+
+    error = ErrorColor,
 
 
     /* Other default colors to override

@@ -19,3 +19,5 @@ val DarkGrey = Color(0xFF1B2223)
 val LightGrey = Color(0xFF3A4F50)
 val Cyan = Color(0xFF0EF6CC)
 val DarkWhite = Color(0xFFF4FEFD)
+
+val ErrorColor = Color(0xFFD00036)
