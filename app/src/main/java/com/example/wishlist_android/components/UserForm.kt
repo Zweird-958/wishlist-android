@@ -55,9 +55,10 @@ fun UserForm(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     capitalization = KeyboardCapitalization.None,
-                    autoCorrect = false
+                    autoCorrect = false,
+                    imeAction = ImeAction.Done,
                 ),
-                error = formUiState.emailError
+                error = formUiState.emailError,
             )
             PasswordTextField(
                 initialValue = password,
