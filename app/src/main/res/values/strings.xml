@@ -12,7 +12,7 @@
     <string name="api_error">Something wrong retry please!</string>
     <string name="sign_up_success">Your account has been successfully created!</string>
     <string name="buy">Buy</string>
-    <string name="password">Mot de passe</string>
+    <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="email_required">Email is required</string>
     <string name="invalid_email">Invalid email</string>
