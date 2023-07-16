@@ -16,6 +16,7 @@ fun Form(
     title: String,
     buttonTitle: String,
     onSubmit: () -> Unit,
+    buttonEnabled: Boolean = true,
     children: @Composable () -> Unit
 ) {
     Column(
@@ -26,6 +27,6 @@ fun Form(
         Spacer(modifier = Modifier.height(16.dp))
         children()
         Spacer(modifier = Modifier.height(16.dp))
-        RoundedButton(buttonTitle = buttonTitle, onSubmit = onSubmit)
+        RoundedButton(buttonTitle = buttonTitle, onSubmit = onSubmit, isEnabled = buttonEnabled)
     }
 }

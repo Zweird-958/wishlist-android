@@ -55,7 +55,11 @@ fun UserForm(
         Form(
             title = title,
             buttonTitle = buttonTitle,
+            buttonEnabled = userFormModel.isFormValid,
             onSubmit = {
+                if (!userFormModel.checkFormValidity()) {
+                    return@Form
+                }
                 onSubmit(email, password)
             }
         ) {

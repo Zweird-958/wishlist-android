@@ -20,12 +20,22 @@ class UserFormModel : ViewModel() {
     val uiState: StateFlow<UserFormState> = _uiState.asStateFlow()
     var userFormProvider: UserFormProvider? = null
 
+    val isFormValid: Boolean
+        get() = _uiState.value.emailError == null && _uiState.value.passwordError == null
+
     private fun isEmailValid(email: String): Boolean {
         val emailRegex = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
         return emailRegex.matches(email)
     }
 
-    fun updateEmail(email: String) {
+    fun checkFormValidity(): Boolean {
+        val emailValid = updateEmail(_uiState.value.email)
+        val passwordValid = updatePassword(_uiState.value.password)
+
+        return emailValid && passwordValid
+    }
+
+    fun updateEmail(email: String): Boolean {
         var error: String? = null
 
         if (email.isEmpty()) {
@@ -38,9 +48,11 @@ class UserFormModel : ViewModel() {
             email = email,
             emailError = error
         )
+
+        return error == null
     }
 
-    fun updatePassword(password: String) {
+    fun updatePassword(password: String): Boolean {
         var error: String? = null
 
         if (password.isEmpty()) {
@@ -48,10 +60,12 @@ class UserFormModel : ViewModel() {
         } else if (password.length < 8) {
             error = userFormProvider?.passwordTooShort
         }
-
+        
         _uiState.value = _uiState.value.copy(
             password = password,
             passwordError = error
         )
+
+        return error == null
     }
 }
