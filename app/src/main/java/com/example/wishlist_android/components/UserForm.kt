@@ -29,6 +29,8 @@ fun UserForm(
     children: @Composable () -> Unit,
 ) {
     val formUiState by userFormModel.uiState.collectAsState()
+    val email = formUiState.email
+    val password = formUiState.password
 
 
 
@@ -48,7 +50,7 @@ fun UserForm(
         ) {
             FormField(
                 label = stringResource(R.string.email),
-                initialValue = formUiState.email,
+                initialValue = email,
                 onValueChange = { userFormModel.updateEmail(it) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -58,7 +60,7 @@ fun UserForm(
                 error = formUiState.emailError
             )
             PasswordTextField(
-                initialValue = formUiState.password,
+                initialValue = password,
                 onValueChange = { userFormModel.updatePassword(it) },
                 label = stringResource(R.string.password),
                 error = formUiState.passwordError
