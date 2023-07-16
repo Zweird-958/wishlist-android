@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.wishlist_android.R
 
 @Composable
 fun UserForm(
@@ -43,7 +45,7 @@ fun UserForm(
             }
         ) {
             FormField(
-                label = "Email",
+                label = stringResource(R.string.email),
                 initialValue = email,
                 onValueChange = { email = it },
                 keyboardOptions = KeyboardOptions(
@@ -55,7 +57,7 @@ fun UserForm(
             PasswordTextField(
                 initialValue = password,
                 onValueChange = { password = it },
-                label = "Mot de passe"
+                label = stringResource(R.string.password)
             )
         }
         children()
