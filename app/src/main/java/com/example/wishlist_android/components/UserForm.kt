@@ -43,6 +43,13 @@ fun UserForm(
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
 
+    fun handleSubmit() {
+        if (!userFormModel.checkFormValidity()) {
+            return@handleSubmit
+        }
+        onSubmit(email, password)
+    }
+
 
 
     Column(
@@ -57,10 +64,7 @@ fun UserForm(
             buttonTitle = buttonTitle,
             buttonEnabled = userFormModel.isFormValid,
             onSubmit = {
-                if (!userFormModel.checkFormValidity()) {
-                    return@Form
-                }
-                onSubmit(email, password)
+                handleSubmit()
             }
         ) {
             FormField(
@@ -86,7 +90,7 @@ fun UserForm(
                 label = stringResource(R.string.password),
                 error = formUiState.passwordError,
                 keyboardActions = KeyboardActions(
-                    onDone = { onSubmit(email, password) },
+                    onDone = { handleSubmit() },
                 ),
             )
 
