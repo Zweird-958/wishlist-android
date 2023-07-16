@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -36,17 +37,22 @@ fun UserForm(
     children: @Composable () -> Unit,
 ) {
     userFormModel.userFormProvider = UserFormProvider(context = LocalContext.current)
+
     val formUiState by userFormModel.uiState.collectAsState()
     val email = formUiState.email
     val password = formUiState.password
 
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     fun handleSubmit() {
+        focusManager.clearFocus()
+
         if (!userFormModel.checkFormValidity()) {
             return@handleSubmit
         }
+        
         onSubmit(email, password)
     }
 
