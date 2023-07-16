@@ -10,9 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,8 +28,6 @@ fun UserForm(
     userFormModel: UserFormModel = viewModel(),
     children: @Composable () -> Unit,
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     val formUiState by userFormModel.uiState.collectAsState()
 
 
@@ -53,7 +48,7 @@ fun UserForm(
         ) {
             FormField(
                 label = stringResource(R.string.email),
-                initialValue = email,
+                initialValue = formUiState.email,
                 onValueChange = { userFormModel.updateEmail(it) },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -63,9 +58,10 @@ fun UserForm(
                 error = formUiState.emailError
             )
             PasswordTextField(
-                initialValue = password,
-                onValueChange = { password = it },
-                label = stringResource(R.string.password)
+                initialValue = formUiState.password,
+                onValueChange = { userFormModel.updatePassword(it) },
+                label = stringResource(R.string.password),
+                error = formUiState.passwordError
             )
 
         }

@@ -1,5 +1,6 @@
 package com.example.wishlist_android.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -29,33 +30,42 @@ fun PasswordTextField(
     label: String,
     initialValue: String,
     onValueChange: (String) -> Unit,
+    error: String? = null,
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
 
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
-        value = initialValue,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.None,
-            autoCorrect = false
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
-        ),
-        visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-        trailingIcon = {
-            val icon =
-                if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-            IconButton(
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    contentColor = MaterialTheme.colorScheme.tertiary,
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                onClick = { passwordVisibility = !passwordVisibility },
-                content = { Icon(icon, contentDescription = "Toggle password visibility") }
-            )
-        },
-    )
+    Column(modifier = Modifier.fillMaxWidth()) {
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = initialValue,
+            onValueChange = onValueChange,
+            label = { Text(label) },
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.None,
+                autoCorrect = false
+            ),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
+            ),
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val icon =
+                    if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                IconButton(
+                    colors = IconButtonDefaults.filledIconButtonColors(
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                        containerColor = MaterialTheme.colorScheme.background
+                    ),
+                    onClick = { passwordVisibility = !passwordVisibility },
+                    content = { Icon(icon, contentDescription = "Toggle password visibility") }
+                )
+            },
+        )
+
+        if (error != null) {
+            ErrorText(error = error)
+        }
+
+    }
 }

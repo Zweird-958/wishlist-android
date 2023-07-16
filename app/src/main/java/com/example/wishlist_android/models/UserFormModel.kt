@@ -10,7 +10,7 @@ data class UserFormState(
     val emailError: String? = null,
 
     val password: String = "",
-    val passwordErrors: String? = null,
+    val passwordError: String? = null,
 )
 
 
@@ -31,6 +31,21 @@ class UserFormModel : ViewModel() {
         _uiState.value = _uiState.value.copy(
             email = email,
             emailError = error
+        )
+    }
+
+    fun updatePassword(password: String) {
+        var error: String? = null
+
+        if (password.isEmpty()) {
+            error = "password required"
+        } else if (password.length < 8) {
+            error = "password too short"
+        }
+
+        _uiState.value = _uiState.value.copy(
+            password = password,
+            passwordError = error
         )
     }
 }
