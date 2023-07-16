@@ -20,22 +20,19 @@ class UserFormModel : ViewModel() {
     val uiState: StateFlow<UserFormState> = _uiState.asStateFlow()
     var userFormProvider: UserFormProvider? = null
 
-    val isFormValid: Boolean
-        get() = _uiState.value.emailError == null && _uiState.value.passwordError == null
-
     private fun isEmailValid(email: String): Boolean {
         val emailRegex = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
         return emailRegex.matches(email)
     }
 
     fun checkFormValidity(): Boolean {
-        val emailValid = updateEmail(_uiState.value.email)
-        val passwordValid = updatePassword(_uiState.value.password)
+        val emailValid = checkEmailValidity(_uiState.value.email) == null
+        val passwordValid = checkPasswordValidity(_uiState.value.password) == null
 
         return emailValid && passwordValid
     }
 
-    fun updateEmail(email: String): Boolean {
+    private fun checkEmailValidity(email: String): String? {
         var error: String? = null
 
         if (email.isEmpty()) {
@@ -43,6 +40,12 @@ class UserFormModel : ViewModel() {
         } else if (!isEmailValid(email)) {
             error = userFormProvider?.emailInvalid
         }
+
+        return error
+    }
+
+    fun updateEmail(email: String): Boolean {
+        val error = checkEmailValidity(email)
 
         _uiState.value = _uiState.value.copy(
             email = email,
@@ -52,7 +55,7 @@ class UserFormModel : ViewModel() {
         return error == null
     }
 
-    fun updatePassword(password: String): Boolean {
+    private fun checkPasswordValidity(password: String): String? {
         var error: String? = null
 
         if (password.isEmpty()) {
@@ -60,7 +63,13 @@ class UserFormModel : ViewModel() {
         } else if (password.length < 8) {
             error = userFormProvider?.passwordTooShort
         }
-        
+
+        return error
+    }
+
+    fun updatePassword(password: String): Boolean {
+        val error = checkPasswordValidity(password)
+
         _uiState.value = _uiState.value.copy(
             password = password,
             passwordError = error
