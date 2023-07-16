@@ -1,6 +1,7 @@
 package com.example.wishlist_android.models
 
 import androidx.lifecycle.ViewModel
+import com.example.wishlist_android.providers.UserFormProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,15 +18,20 @@ data class UserFormState(
 class UserFormModel : ViewModel() {
     private val _uiState = MutableStateFlow(UserFormState())
     val uiState: StateFlow<UserFormState> = _uiState.asStateFlow()
+    var userFormProvider: UserFormProvider? = null
 
+    private fun isEmailValid(email: String): Boolean {
+        val emailRegex = Regex("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
+        return emailRegex.matches(email)
+    }
 
     fun updateEmail(email: String) {
         var error: String? = null
 
         if (email.isEmpty()) {
-            error = "empty error"
-        } else if (email.length < 3) {
-            error = "len error"
+            error = userFormProvider?.emailRequired
+        } else if (!isEmailValid(email)) {
+            error = userFormProvider?.emailInvalid
         }
 
         _uiState.value = _uiState.value.copy(
@@ -38,9 +44,9 @@ class UserFormModel : ViewModel() {
         var error: String? = null
 
         if (password.isEmpty()) {
-            error = "password required"
+            error = userFormProvider?.passwordRequired
         } else if (password.length < 8) {
-            error = "password too short"
+            error = userFormProvider?.passwordTooShort
         }
 
         _uiState.value = _uiState.value.copy(

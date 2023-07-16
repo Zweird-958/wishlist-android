@@ -59,6 +59,7 @@ fun SignUp(navController: NavController) {
                     } else {
                         Looper.prepare()
                         handleErrors(response, navController, "signUp")
+                        Looper.loop()
                     }
                 } catch (e: Exception) {
                     Log.d("ayush: ", e.toString())

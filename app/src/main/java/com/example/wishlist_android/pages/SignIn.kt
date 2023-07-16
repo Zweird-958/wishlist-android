@@ -66,6 +66,7 @@ fun SignIn(navController: NavController) {
 
                         Looper.prepare()
                         handleErrors(response, navController, "signIn")
+                        Looper.loop()
 
                     }
                 } catch (e: Exception) {

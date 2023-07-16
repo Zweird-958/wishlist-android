@@ -33,6 +33,7 @@ suspend fun fetchWishlist(
 
         Looper.prepare()
         handleErrors(response, navController, currentRoute)
+        Looper.loop()
 
     }
 }
