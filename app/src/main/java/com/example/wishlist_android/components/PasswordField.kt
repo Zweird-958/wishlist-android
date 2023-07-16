@@ -42,6 +42,7 @@ fun PasswordTextField(
             value = initialValue,
             onValueChange = onValueChange,
             label = { Text(label) },
+            isError = error != null,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
