@@ -1,7 +1,6 @@
 package com.example.wishlist_android.utils
 
 import android.os.Looper
-import android.util.Log
 import androidx.navigation.NavController
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
@@ -22,7 +21,6 @@ suspend fun fetchWishlist(
 
         if (result != null) {
             wishlist = result
-            Log.d("Wishlist", "Wishlist fetched $result")
         }
 
         if (navigateToWishlist) {
