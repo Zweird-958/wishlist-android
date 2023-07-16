@@ -1,5 +1,6 @@
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -15,23 +16,25 @@ import com.example.wishlist_android.components.ErrorText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormField(
+    modifier: Modifier = Modifier,
     label: String,
     initialValue: String,
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     error: String? = null,
+    keyboardActions: KeyboardActions,
 ) {
     val value = remember { mutableStateOf(initialValue) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             value = value.value,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
             ),
             keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
             onValueChange = {
                 value.value = it
                 onValueChange(it)

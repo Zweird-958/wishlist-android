@@ -6,12 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -36,6 +40,9 @@ fun UserForm(
     val email = formUiState.email
     val password = formUiState.password
 
+    val emailFocusRequester = remember { FocusRequester() }
+    val passwordFocusRequester = remember { FocusRequester() }
+
 
 
     Column(
@@ -53,6 +60,7 @@ fun UserForm(
             }
         ) {
             FormField(
+                modifier = Modifier.focusRequester(emailFocusRequester),
                 label = stringResource(R.string.email),
                 initialValue = email,
                 onValueChange = { userFormModel.updateEmail(it) },
@@ -62,13 +70,20 @@ fun UserForm(
                     autoCorrect = false,
                     imeAction = ImeAction.Done,
                 ),
+                keyboardActions = KeyboardActions(
+                    onDone = { passwordFocusRequester.requestFocus() },
+                ),
                 error = formUiState.emailError,
             )
             PasswordTextField(
+                modifier = Modifier.focusRequester(passwordFocusRequester),
                 initialValue = password,
                 onValueChange = { userFormModel.updatePassword(it) },
                 label = stringResource(R.string.password),
-                error = formUiState.passwordError
+                error = formUiState.passwordError,
+                keyboardActions = KeyboardActions(
+                    onDone = { onSubmit(email, password) },
+                ),
             )
 
         }

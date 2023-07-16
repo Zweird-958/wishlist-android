@@ -2,6 +2,7 @@ package com.example.wishlist_android.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -28,17 +29,19 @@ import androidx.compose.ui.text.input.VisualTransformation
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordTextField(
+    modifier: Modifier = Modifier,
     label: String,
     initialValue: String,
     onValueChange: (String) -> Unit,
     error: String? = null,
+    keyboardActions: KeyboardActions,
 ) {
     var passwordVisibility by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             value = initialValue,
             onValueChange = onValueChange,
             label = { Text(label) },
@@ -48,6 +51,7 @@ fun PasswordTextField(
                 autoCorrect = false,
                 imeAction = ImeAction.Done,
             ),
+            keyboardActions = keyboardActions,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
             ),
