@@ -1,10 +1,12 @@
-import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -21,9 +23,9 @@ import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -35,47 +37,45 @@ fun SignIn(navController: NavController) {
     val timeoutToast =
         Toast.makeText(context, stringResource(R.string.api_error), Toast.LENGTH_SHORT)
     val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
+    var isLoading by remember { mutableStateOf(false) }
 
     UserForm(
         title = stringResource(R.string.sign_in_title),
         buttonTitle = stringResource(R.string.sign_in),
+        isLoading = isLoading,
         onSubmit = { email, password ->
 
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.Main).launch {
+                withContext(Dispatchers.Main) {
 
-                try {
+                    try {
+                        isLoading = true
 
-                    val response = wishApi.signIn(
-                        LoginRequest(
-                            email = email,
-                            password = password
+                        val response = wishApi.signIn(
+                            LoginRequest(
+                                email = email,
+                                password = password
+                            )
                         )
-                    )
 
-
-                    if (response.isSuccessful) {
-                        val result = response.body()?.result
-                        if (result != null) {
-                            saveToken(context, result)
-                            token = result
-                            withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            val result = response.body()?.result
+                            if (result != null) {
+                                saveToken(context, result)
+                                token = result
                                 navigateAndClearHistory(navController, "wishlist", "signIn")
                             }
+                        } else {
+                            handleErrors(response, navController, "signIn")
                         }
-                    } else {
 
-                        Looper.prepare()
-                        handleErrors(response, navController, "signIn")
-                        Looper.loop()
-
+                    } catch (e: Exception) {
+                        timeoutToast.show()
+                    } finally {
+                        isLoading = false
                     }
-                } catch (e: Exception) {
-                    Log.d("error: ", e.toString())
-                    timeoutToast.show()
                 }
-
             }
-
         }
     ) {
         val annotatedString = buildAnnotatedString {

@@ -31,14 +31,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wishlist_android.R
 import com.example.wishlist_android.models.UserFormModel
 import com.example.wishlist_android.providers.UserFormProvider
+import kotlinx.coroutines.DelicateCoroutinesApi
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, DelicateCoroutinesApi::class)
 @Composable
 fun UserForm(
     onSubmit: (String, String) -> Unit,
     buttonTitle: String,
     title: String,
     userFormModel: UserFormModel = viewModel(),
+    isLoading: Boolean,
     children: @Composable () -> Unit,
 ) {
     userFormModel.userFormProvider = UserFormProvider(context = LocalContext.current)
@@ -51,6 +53,7 @@ fun UserForm(
     val passwordFocusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
+
     fun handleSubmit() {
         focusManager.clearFocus()
 
@@ -59,7 +62,9 @@ fun UserForm(
         }
 
         onSubmit(email, password)
+
     }
+
 
 
     Box(
@@ -84,7 +89,8 @@ fun UserForm(
                 buttonEnabled = userFormModel.checkFormValidity(),
                 onSubmit = {
                     handleSubmit()
-                }
+                },
+                isLoading = isLoading,
             ) {
                 FormField(
                     modifier = Modifier.focusRequester(emailFocusRequester),
@@ -112,6 +118,7 @@ fun UserForm(
                         onDone = { handleSubmit() },
                     ),
                 )
+
 
             }
             children()

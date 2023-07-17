@@ -1,7 +1,10 @@
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +20,7 @@ fun Form(
     buttonTitle: String,
     onSubmit: () -> Unit,
     buttonEnabled: Boolean = true,
+    isLoading: Boolean = false,
     children: @Composable () -> Unit
 ) {
     Column(
@@ -27,6 +31,24 @@ fun Form(
         Spacer(modifier = Modifier.height(16.dp))
         children()
         Spacer(modifier = Modifier.height(16.dp))
-        RoundedButton(buttonTitle = buttonTitle, onSubmit = onSubmit, isEnabled = buttonEnabled)
+        RoundedButton(onSubmit = onSubmit, isEnabled = buttonEnabled) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(20.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary,
+
+                        )
+                }
+                Text(
+                    text = buttonTitle,
+                )
+            }
+        }
     }
 }

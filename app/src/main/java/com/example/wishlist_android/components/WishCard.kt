@@ -88,9 +88,10 @@ fun WishCard(wish: Wish) {
 
                 if (wish.link != null) {
                     RoundedButton(
-                        buttonTitle = stringResource(R.string.buy),
                         onSubmit = { openWebPage(context, wish.link) },
-                    )
+                    ) {
+                        Text(stringResource(R.string.buy))
+                    }
                 } else {
                     Box(modifier = Modifier.fillMaxWidth())
                 }
