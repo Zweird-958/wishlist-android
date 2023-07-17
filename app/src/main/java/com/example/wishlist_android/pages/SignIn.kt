@@ -1,22 +1,16 @@
-import androidx.compose.foundation.clickable
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
 import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.UserFormBody
+import com.example.wishlist_android.components.UserBottomRedirection
 import com.example.wishlist_android.components.UserForm
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.handleErrors
@@ -74,23 +68,14 @@ fun SignIn(navController: NavController) {
                 }
             }
         }
-    ) {
-        val annotatedString = buildAnnotatedString {
-            append(stringResource(R.string.new_account))
-            withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                append(" ${stringResource(R.string.click_sign_up)}")
-            }
-        }
+    ) {}
+
+    UserBottomRedirection(
+        leftText = stringResource(R.string.new_account),
+        rightText = stringResource(R.string.click_sign_up),
+        navController = navController,
+        currentRoute = "signIn",
+    )
 
 
-        Text(
-            text = annotatedString,
-            modifier = Modifier
-                .clickable {
-                    navigateAndClearHistory(navController, "signUp", "signIn")
-                },
-        )
-
-
-    }
 }
