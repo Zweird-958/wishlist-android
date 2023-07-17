@@ -13,12 +13,16 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 
 object OkHttpClientHelper {
 
     fun getInstance(): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor { chain ->
                 val language: String = Locale.getDefault().language
 
