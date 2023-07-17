@@ -12,6 +12,11 @@ fun handleErrors(response: Response<*>, navController: NavController, currentRou
     val errorMessage = response.errorBody()?.string()
     val error = JSONObject(errorMessage!!).getString("error")
 
+    if (currentRoute == "signUp" && status == 500) {
+        navigateAndClearHistory(navController, "signIn", currentRoute)
+        return
+    }
+
     Toast.makeText(navController.context, error, Toast.LENGTH_SHORT).show()
 
     if (status == 403) {
