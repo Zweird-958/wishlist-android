@@ -5,8 +5,6 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.wishlist
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 suspend fun fetchWishlist(
     navController: NavController,
@@ -24,13 +22,11 @@ suspend fun fetchWishlist(
         }
 
         if (navigateToWishlist) {
-            withContext(Dispatchers.Main) {
-                navigateAndClearHistory(navController, "wishlist", currentRoute)
-            }
+            navigateAndClearHistory(navController, "wishlist", currentRoute)
         }
 
     } else {
-
+        
         Looper.prepare()
         handleErrors(response, navController, currentRoute)
         Looper.loop()

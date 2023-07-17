@@ -18,10 +18,12 @@ import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
@@ -36,12 +38,13 @@ fun LoadingPage(navController: NavController) {
 
             token = tokenLoaded
 
-            GlobalScope.launch {
-
-                try {
-                    fetchWishlist(navController, "loading", true)
-                } catch (e: Exception) {
-                    handleErrors(e, navController, "signIn", context)
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.Main) {
+                    try {
+                        fetchWishlist(navController, "loading", true)
+                    } catch (e: Exception) {
+                        handleErrors(e, navController, "signIn", context)
+                    }
                 }
             }
         } else {
