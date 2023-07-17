@@ -22,7 +22,7 @@ fun FormField(
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     error: String? = null,
-    keyboardActions: KeyboardActions,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     val value = remember { mutableStateOf(initialValue) }
 
