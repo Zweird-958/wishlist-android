@@ -53,7 +53,7 @@ fun SignUp(navController: NavController) {
                                 password = password
                             )
                         )
-
+                        
                         if (response.isSuccessful) {
                             navigateAndClearHistory(navController, "signIn", "signUp")
                             successToast.show()

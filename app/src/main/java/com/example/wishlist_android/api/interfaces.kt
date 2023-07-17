@@ -2,6 +2,7 @@ package com.example.wishlist_android.api
 
 import com.example.wishlist_android.api.classes.LoginRequest
 import com.example.wishlist_android.api.classes.LoginResult
+import com.example.wishlist_android.api.classes.SignUpResponse
 import com.example.wishlist_android.api.classes.WishResult
 import com.example.wishlist_android.config
 import com.example.wishlist_android.token
@@ -53,7 +54,7 @@ interface WishApi {
     suspend fun signIn(@Body loginRequest: LoginRequest): Response<LoginResult>
 
     @POST("/sign-up")
-    suspend fun signUp(@Body loginRequest: LoginRequest): Response<LoginResult>
+    suspend fun signUp(@Body loginRequest: LoginRequest): Response<SignUpResponse>
 
     @GET("/wish")
     suspend fun getWish(): Response<WishResult>
