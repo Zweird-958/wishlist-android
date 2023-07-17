@@ -1,15 +1,11 @@
 package com.example.wishlist_android.pages
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,7 +17,6 @@ import com.example.wishlist_android.utils.navigateAndClearHistory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -59,44 +54,14 @@ fun LoadingPage(navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                LoadingCircle()
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(50.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.primary,
+
+                    )
             }
         }
     )
-}
-
-@Composable
-fun LoadingCircle() {
-    var rotationAngle by remember { mutableStateOf(0f) }
-    val primaryColor = MaterialTheme.colorScheme.primary
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(16L) // Adjust the delay to control the speed of rotation
-            rotationAngle += 5f
-        }
-    }
-
-    Canvas(
-        modifier = Modifier
-            .size(40.dp)
-            .graphicsLayer(
-                rotationZ = rotationAngle
-            )
-    ) {
-        val strokeWidth = 5f
-
-        val gradientBrush = Brush.sweepGradient(
-            listOf(primaryColor, primaryColor),
-            center
-        )
-
-        drawArc(
-            brush = gradientBrush,
-            startAngle = 0f,
-            sweepAngle = 180f,
-            useCenter = false,
-            style = Stroke(width = strokeWidth)
-        )
-    }
 }
