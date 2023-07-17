@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
+import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -38,11 +39,9 @@ fun LoadingPage(navController: NavController) {
             GlobalScope.launch {
 
                 try {
-
                     fetchWishlist(navController, "loading", true)
-
                 } catch (e: Exception) {
-                    println(e)
+                    handleErrors(e, navController, "signIn", context)
                 }
             }
         } else {

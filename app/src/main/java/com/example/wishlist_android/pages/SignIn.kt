@@ -1,4 +1,3 @@
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -34,8 +33,6 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SignIn(navController: NavController) {
     val context = LocalContext.current
-    val timeoutToast =
-        Toast.makeText(context, stringResource(R.string.api_error), Toast.LENGTH_SHORT)
     val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
     var isLoading by remember { mutableStateOf(false) }
 
@@ -70,7 +67,7 @@ fun SignIn(navController: NavController) {
                         }
 
                     } catch (e: Exception) {
-                        timeoutToast.show()
+                        handleErrors(e, navController, "signIn", context)
                     } finally {
                         isLoading = false
                     }

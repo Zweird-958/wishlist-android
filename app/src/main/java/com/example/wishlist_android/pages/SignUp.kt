@@ -1,4 +1,3 @@
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.MaterialTheme
@@ -61,7 +60,7 @@ fun SignUp(navController: NavController) {
                             handleErrors(response, navController, "signUp")
                         }
                     } catch (e: Exception) {
-                        Log.d("ayush: ", e.toString())
+                        handleErrors(e, navController, "SignUp", context)
                     } finally {
                         isLoading = false
                     }

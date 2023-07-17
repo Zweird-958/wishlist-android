@@ -1,7 +1,10 @@
 package com.example.wishlist_android.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.widget.Toast
 import androidx.navigation.NavController
+import com.example.wishlist_android.R
 import com.example.wishlist_android.token
 import org.json.JSONObject
 import retrofit2.Response
@@ -23,5 +26,17 @@ fun handleErrors(response: Response<*>, navController: NavController, currentRou
         token = ""
         navigateAndClearHistory(navController, "signIn", currentRoute)
     }
+
+}
+
+@SuppressLint("ShowToast")
+fun handleErrors(
+    error: Exception,
+    navController: NavController,
+    currentRoute: String,
+    context: Context
+) {
+    Toast.makeText(context, context.getString(R.string.api_error), Toast.LENGTH_SHORT).show()
+
 
 }
