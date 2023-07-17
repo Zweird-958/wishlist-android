@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
-import com.example.wishlist_android.api.classes.LoginRequest
+import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserForm
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.handleErrors
@@ -52,7 +52,7 @@ fun SignIn(navController: NavController) {
                         isLoading = true
 
                         val response = wishApi.signIn(
-                            LoginRequest(
+                            UserFormBody(
                                 email = email,
                                 password = password
                             )

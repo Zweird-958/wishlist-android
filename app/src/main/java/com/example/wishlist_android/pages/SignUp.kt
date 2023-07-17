@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
-import com.example.wishlist_android.api.classes.LoginRequest
+import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserForm
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
@@ -48,12 +48,12 @@ fun SignUp(navController: NavController) {
                         isLoading = true
 
                         val response = wishApi.signUp(
-                            LoginRequest(
+                            UserFormBody(
                                 email = email,
                                 password = password
                             )
                         )
-                        
+
                         if (response.isSuccessful) {
                             navigateAndClearHistory(navController, "signIn", "signUp")
                             successToast.show()
