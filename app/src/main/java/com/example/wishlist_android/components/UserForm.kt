@@ -101,10 +101,10 @@ fun UserForm(
                         keyboardType = KeyboardType.Email,
                         capitalization = KeyboardCapitalization.None,
                         autoCorrect = false,
-                        imeAction = ImeAction.Done,
+                        imeAction = ImeAction.Next,
                     ),
                     keyboardActions = KeyboardActions(
-                        onDone = { passwordFocusRequester.requestFocus() },
+                        onNext = { passwordFocusRequester.requestFocus() },
                     ),
                     error = formUiState.emailError,
                 )
