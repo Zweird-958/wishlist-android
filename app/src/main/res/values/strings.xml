@@ -18,4 +18,5 @@
     <string name="invalid_email">Invalid email</string>
     <string name="password_required">Password is required</string>
     <string name="password_too_short">Password must have 8 characters</string>
+    <string name="wishlist_empty">Your wishlist is empty!</string>
 </resources>
