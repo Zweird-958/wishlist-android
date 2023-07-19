@@ -15,13 +15,13 @@ private val DarkColorScheme = darkColorScheme(
 
     primaryContainer = LightGrey,
     onPrimaryContainer = DarkWhite,
-    onPrimary = LightGrey,
+    onPrimary = DarkWhite,
 
     secondary = PurpleGrey80,
     tertiary = White,
 
     background = DarkGrey,
-    onBackground = LightGrey,
+    onBackground = DarkWhite,
 
     error = ErrorColor,
 
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Grey,
 
     background = White,
-    onBackground = DarkWhite,
+    onBackground = LightGrey,
 
     error = ErrorColor,
 
