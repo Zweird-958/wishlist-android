@@ -19,4 +19,6 @@
     <string name="password_required">Mot de passe est requis</string>
     <string name="password_too_short">Votre mot de passe doit avoir au minimum 8 caractères</string>
     <string name="wishlist_empty">Votre liste d\'envie est vide</string>
+    <string name="profile">Profil</string>
+    <string name="wishlist">Liste d\'envie</string>
 </resources>

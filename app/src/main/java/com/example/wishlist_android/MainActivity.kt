@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wishlist_android.pages.LoadingPage
+import com.example.wishlist_android.pages.Profile
 import com.example.wishlist_android.pages.Wishlist
 import com.example.wishlist_android.ui.theme.WishlistandroidTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -64,6 +65,10 @@ class MainActivity : ComponentActivity() {
 
                         composable("wishlist") {
                             Wishlist(navController = navController)
+                        }
+
+                        composable("profile") {
+                            Profile(navController = navController)
                         }
                     }
                 }

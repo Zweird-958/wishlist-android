@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.WishCard
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.wishlist
@@ -57,46 +58,49 @@ fun Wishlist(navController: NavController) {
 
     val pullRefreshState = rememberPullRefreshState(refreshing, { refreshing = true })
 
-    Box(Modifier.pullRefresh(pullRefreshState)) {
+    Drawer(title = stringResource(R.string.wishlist), navController = navController) {
+        Box(Modifier.pullRefresh(pullRefreshState)) {
 
-        if (wishlistState.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Card(
+
+            if (wishlistState.isEmpty()) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = stringResource(R.string.wishlist_empty),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        textAlign = TextAlign.Center,
+                    Card(
                         modifier = Modifier
-                            .padding(32.dp)
                             .fillMaxWidth()
-                    )
+                            .padding(horizontal = 32.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        ),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.wishlist_empty),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(32.dp)
+                                .fillMaxWidth()
+                        )
+                    }
                 }
-            }
 
-        } else {
+            } else {
 
-            LazyColumn {
-                wishlistState.forEach { wish ->
-                    item {
-                        WishCard(wish = wish)
+                LazyColumn {
+                    wishlistState.forEach { wish ->
+                        item {
+                            WishCard(wish = wish)
+                        }
                     }
                 }
             }
-        }
 
-        PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+            PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+        }
     }
 }
