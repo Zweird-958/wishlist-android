@@ -113,22 +113,17 @@ fun DrawerContent(
                             .padding(10.dp)
                             .fillMaxWidth()
                             .clickable {
-                                if (drawerItem.route != currentRoute) {
-                                    if (isDrawerRoute) {
-                                        navigateAndClearHistory(
-                                            navController,
-                                            drawerItem.route,
-                                            currentRoute!!
-                                        )
-                                    } else {
-                                        navController.navigate(drawerItem.route)
+                                if (isDrawerRoute) {
+                                    navigateAndClearHistory(
+                                        navController,
+                                        drawerItem.route,
+                                        currentRoute!!
+                                    )
+                                } else {
+                                    navController.navigate(drawerItem.route) {
+                                        launchSingleTop = true
                                     }
-
                                 }
-                                coroutineScope.launch {
-                                    drawerState.close()
-                                }
-
                             },
                     ) {
                         Icon(
