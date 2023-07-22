@@ -1,6 +1,5 @@
 package com.example.wishlist_android.utils
 
-import android.os.Looper
 import androidx.navigation.NavController
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
@@ -26,10 +25,6 @@ suspend fun fetchWishlist(
         }
 
     } else {
-        
-        Looper.prepare()
         handleErrors(response, navController, currentRoute)
-        Looper.loop()
-
     }
 }
