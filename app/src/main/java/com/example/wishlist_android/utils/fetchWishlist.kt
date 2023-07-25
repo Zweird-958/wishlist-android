@@ -3,6 +3,7 @@ package com.example.wishlist_android.utils
 import androidx.navigation.NavController
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
+import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.wishlist
 
 suspend fun fetchWishlist(
@@ -17,7 +18,7 @@ suspend fun fetchWishlist(
         val result = response.body()?.result
 
         if (result != null) {
-            wishlist = result
+            wishlist = result as MutableList<Wish>
         }
 
         if (navigateToWishlist) {

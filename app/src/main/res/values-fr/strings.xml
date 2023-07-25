@@ -22,4 +22,14 @@
     <string name="profile">Profil</string>
     <string name="wishlist">Liste d\'envie</string>
     <string name="sign_out">Se déconnecter</string>
+    <string name="invalid_link">Lien non valide</string>
+    <string name="invalid_price">Prix non valide</string>
+    <string name="name">Nom</string>
+    <string name="link">Lien</string>
+    <string name="price">Prix</string>
+    <string name="add_image">Ajouter image</string>
+    <string name="change_image">Changer image</string>
+    <string name="name_required">Le nom est requis</string>
+    <string name="add_wish">Ajouter à la liste d\'envie</string>
+    <string name="back_button">Retour</string>
 </resources>

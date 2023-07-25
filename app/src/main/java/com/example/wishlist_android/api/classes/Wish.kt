@@ -18,3 +18,8 @@ data class WishResult(
     val result: List<Wish>? = null,
     val error: String? = ""
 )
+
+data class SingleWishResult(
+    val result: Wish? = null,
+    val error: String? = ""
+)

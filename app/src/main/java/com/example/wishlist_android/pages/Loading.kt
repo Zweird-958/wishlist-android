@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wishlist_android.api.RetrofitHelper
+import com.example.wishlist_android.api.WishApi
+import com.example.wishlist_android.currencies
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
@@ -25,6 +28,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun LoadingPage(navController: NavController) {
     val context = LocalContext.current
+    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
 
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
@@ -44,6 +48,28 @@ fun LoadingPage(navController: NavController) {
             }
         } else {
             navigateAndClearHistory(navController, "signIn", "loading")
+        }
+
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = wishApi.getCurrencies()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val currenciesResult = response.body()?.result
+                        if (currenciesResult != null) {
+                            currencies = currenciesResult
+                        }
+                    } else {
+                        handleErrors(
+                            response,
+                            navController,
+                            "loading"
+                        )
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            handleErrors(e, navController, "signIn", context)
         }
     }
 

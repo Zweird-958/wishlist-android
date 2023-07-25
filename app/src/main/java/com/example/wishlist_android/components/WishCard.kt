@@ -9,21 +9,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.utils.openWebPage
@@ -50,32 +44,7 @@ fun WishCard(wish: Wish) {
                 .height(IntrinsicSize.Min)
         ) {
 
-            Box(
-                modifier = Modifier
-                    .size(height = 130.dp, width = 130.dp)
-                    .clip(shape = RoundedCornerShape(5.dp))
-            ) {
-
-                AsyncImage(
-
-                    model = wish.image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .blur(20.dp),
-                    contentScale = ContentScale.Crop
-                )
-                AsyncImage(
-
-                    model = wish.image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(2.dp)
-                        .clip(shape = RoundedCornerShape(5.dp)),
-                )
-            }
-
+            WishImage(image = wish.image)
 
             Column(
                 modifier = Modifier

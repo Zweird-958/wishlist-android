@@ -4,14 +4,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,7 +63,28 @@ fun Wishlist(navController: NavController) {
 
     val pullRefreshState = rememberPullRefreshState(refreshing, { refreshing = true })
 
-    Drawer(title = stringResource(R.string.wishlist), navController = navController) {
+    Drawer(
+        title = stringResource(R.string.wishlist),
+        navController = navController,
+        floatingActionButton = {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                onClick = {
+                    navController.navigate("addWish")
+                },
+                modifier = Modifier
+                    .padding(16.dp),
+            ) {
+                Icon(
+                    modifier = Modifier.size(26.dp),
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_wish),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        }) {
+
+
         Box(Modifier.pullRefresh(pullRefreshState)) {
 
 
