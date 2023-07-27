@@ -153,7 +153,7 @@ fun DeletePopUp(
                     ) {
                         Text(
                             text = stringResource(R.string.confirm),
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }

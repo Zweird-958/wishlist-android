@@ -183,12 +183,12 @@ fun WishForm(
 
                     RoundedButton(
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
                         ),
                         onSubmit = { isMenuExpanded = !isMenuExpanded }) {
                         Text(
                             text = selectedCurrency,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
 
@@ -197,7 +197,7 @@ fun WishForm(
                         modifier = Modifier
                             .width(screenWidth - 64.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.primaryContainer,
+                                color = MaterialTheme.colorScheme.secondaryContainer,
                             ),
                         expanded = isMenuExpanded,
                         onDismissRequest = { isMenuExpanded = false },
@@ -212,7 +212,7 @@ fun WishForm(
                             ) {
                                 Text(
                                     text = currency,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                             }
                         }

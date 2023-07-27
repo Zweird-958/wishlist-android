@@ -31,7 +31,7 @@ fun CustomScaffold(
                 title = {
                     Text(
                         text = title,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.titleLarge,
                     )
                 },

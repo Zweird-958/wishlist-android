@@ -94,7 +94,7 @@ fun Wishlist(navController: NavController) {
                     modifier = Modifier.size(26.dp),
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.add_wish),
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }) {
