@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RoundedButton(
+    modifier: Modifier = Modifier,
     onSubmit: () -> Unit,
     isEnabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -20,7 +21,7 @@ fun RoundedButton(
     children: @Composable () -> Unit,
 ) {
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         enabled = isEnabled,
         colors = colors,

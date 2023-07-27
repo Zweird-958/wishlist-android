@@ -15,10 +15,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -77,4 +79,7 @@ interface WishApi {
 
     @GET("currency")
     suspend fun getCurrencies(): Response<CurrencyResult>
+
+    @DELETE("wish/{id}")
+    suspend fun deleteWish(@Path("id") id: Int): Response<SingleWishResult>
 }

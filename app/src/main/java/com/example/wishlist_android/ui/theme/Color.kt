@@ -22,3 +22,4 @@ val DarkWhite = Color(0xFFF4FEFD)
 val PrimaryBlue = Color(0xFF0072F5)
 
 val ErrorColor = Color(0xFFD00036)
+val ErrorColorContainer = Color(0xFFFF0000)

@@ -24,6 +24,9 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = DarkWhite,
 
     error = ErrorColor,
+    errorContainer = ErrorColorContainer,
+    onErrorContainer = DarkWhite,
+
 
     )
 
@@ -41,6 +44,8 @@ private val LightColorScheme = lightColorScheme(
     onBackground = LightGrey,
 
     error = ErrorColor,
+    errorContainer = ErrorColorContainer,
+    onErrorContainer = DarkWhite,
 
 
     /* Other default colors to override

@@ -32,4 +32,8 @@
     <string name="name_required">Le nom est requis</string>
     <string name="add_wish">Ajouter à la liste d\'envie</string>
     <string name="back_button">Retour</string>
+    <string name="delete">Delete</string>
+    <string name="delete_pop_up_text">Voulez-vous vraiment supprimer ce souhait ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Confirmer</string>
 </resources>

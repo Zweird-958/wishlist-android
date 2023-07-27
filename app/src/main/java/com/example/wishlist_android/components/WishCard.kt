@@ -23,13 +23,12 @@ import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.utils.openWebPage
 
 @Composable
-fun WishCard(wish: Wish) {
+fun WishCard(modifier: Modifier = Modifier, wish: Wish) {
     val context = LocalContext.current
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         ),
