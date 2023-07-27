@@ -32,6 +32,7 @@ import com.example.wishlist_android.config
 import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
+import com.example.wishlist_android.wishlist
 import java.util.Locale
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -98,6 +99,7 @@ fun Profile(navController: NavController) {
             RoundedButton(
                 modifier = Modifier.width(300.dp),
                 onSubmit = {
+                    wishlist.clear()
                     navigateAndClearHistory(navController, "signIn", "profile")
                     token = ""
                     saveToken(navController.context, null)
