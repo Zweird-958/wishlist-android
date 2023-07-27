@@ -86,7 +86,7 @@ fun UserForm(
             Form(
                 title = title,
                 buttonTitle = buttonTitle,
-                buttonEnabled = userFormModel.checkFormValidity(),
+                buttonEnabled = userFormModel.checkFormValidity() && !isLoading,
                 onSubmit = {
                     handleSubmit()
                 },
