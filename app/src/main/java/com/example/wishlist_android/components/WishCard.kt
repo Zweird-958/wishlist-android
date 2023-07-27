@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
@@ -51,7 +52,7 @@ fun WishCard(modifier: Modifier = Modifier, wish: Wish) {
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = wish.name)
+                Text(text = wish.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(text = wish.priceFormatted)
 
                 if (wish.link != null) {
