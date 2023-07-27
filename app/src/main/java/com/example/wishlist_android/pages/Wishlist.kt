@@ -109,7 +109,7 @@ fun Wishlist(navController: NavController) {
                 navController = navController
             )
         }
-
+        
         Box(Modifier.pullRefresh(pullRefreshState)) {
 
 
@@ -156,7 +156,13 @@ fun Wishlist(navController: NavController) {
                 }
             }
 
-            PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+            PullRefreshIndicator(
+                refreshing,
+                pullRefreshState,
+                Modifier.align(Alignment.TopCenter),
+                backgroundColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }
