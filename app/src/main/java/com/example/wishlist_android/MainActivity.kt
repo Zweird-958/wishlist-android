@@ -2,6 +2,7 @@ package com.example.wishlist_android
 
 import SignIn
 import SignUp
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,10 +20,33 @@ import com.example.wishlist_android.pages.LoadingPage
 import com.example.wishlist_android.pages.Profile
 import com.example.wishlist_android.pages.Wishlist
 import com.example.wishlist_android.ui.theme.WishlistandroidTheme
+import com.example.wishlist_android.utils.getLanguage
+import com.example.wishlist_android.utils.saveLanguage
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context?) {
+        val language = getLanguage(newBase!!)
+        val locale = if (language != null) Locale(language) else null
+
+        val configuration = newBase.resources?.configuration
+
+        if (locale != null) {
+            configuration?.setLocale(locale)
+            Locale.setDefault(locale)
+        }
+
+        if (!config.languagesDisplayed.keys.contains(Locale.getDefault().language)) {
+            Locale.setDefault(Locale(config.defaultLanguage))
+        }
+
+        val context = configuration?.let { newBase.createConfigurationContext(it) }
+        super.attachBaseContext(context)
+
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -79,5 +103,15 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    fun setLocale(locale: Locale) {
+        if (Locale.getDefault() == locale) {
+            return
+        }
+
+        saveLanguage(this, locale.language)
+        finish()
+        startActivity(intent)
     }
 }
