@@ -2,6 +2,7 @@ package com.example.wishlist_android.pages
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -147,8 +148,8 @@ fun Wishlist(navController: NavController) {
                         WishSwipeableCard(wish = wish, onClick = {
                             scope.launch {
                                 isPopupVisible.value = true
-                                popupScale.animateTo(1f)
                                 selectedWish.value = wish
+                                popupScale.animateTo(1f, animationSpec = tween(300))
                             }
                         })
                     }

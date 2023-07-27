@@ -92,10 +92,10 @@ fun WishSwipeableCard(wish: Wish, onClick: () -> Unit = { }) {
                     interactionSource = MutableInteractionSource(),
                     indication = null,
                 ) {
-                    onClick()
                     scope.launch {
-                        offsetX.animateTo(startOffsetX, animationSpec = tween(300))
+                        offsetX.animateTo(startOffsetX, animationSpec = tween(500))
                     }
+                    onClick()
                 },
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.errorContainer,
