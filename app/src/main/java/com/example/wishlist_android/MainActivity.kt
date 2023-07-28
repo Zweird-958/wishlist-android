@@ -12,10 +12,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.wishlist_android.pages.AddWish
+import com.example.wishlist_android.pages.EditWish
 import com.example.wishlist_android.pages.LoadingPage
 import com.example.wishlist_android.pages.Profile
 import com.example.wishlist_android.pages.Wishlist
@@ -98,6 +101,13 @@ class MainActivity : ComponentActivity() {
 
                         composable("addWish") {
                             AddWish(navController = navController)
+                        }
+
+                        composable(
+                            "wish/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            EditWish(navController, backStackEntry.arguments?.getInt("id"))
                         }
                     }
                 }

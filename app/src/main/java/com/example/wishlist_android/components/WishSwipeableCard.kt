@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.utils.dpToPx
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun WishSwipeableCard(wish: Wish, onClick: () -> Unit = { }) {
+fun WishSwipeableCard(wish: Wish, navController: NavController, onClick: () -> Unit = { }) {
     val startOffsetX = 0f
     val offsetX = remember { Animatable(startOffsetX) }
     val limitDp = 100f
@@ -80,7 +81,8 @@ fun WishSwipeableCard(wish: Wish, onClick: () -> Unit = { }) {
     ) {
         WishCard(
             modifier = Modifier.offset { IntOffset(offsetX.value.roundToInt(), 0) },
-            wish = wish
+            wish = wish,
+            navController = navController
         )
         Card(
             modifier = Modifier

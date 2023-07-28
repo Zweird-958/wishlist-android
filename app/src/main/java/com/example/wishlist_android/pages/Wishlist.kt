@@ -109,10 +109,8 @@ fun Wishlist(navController: NavController) {
                 navController = navController
             )
         }
-        
+
         Box(Modifier.pullRefresh(pullRefreshState)) {
-
-
             if (wishlistState.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -145,7 +143,7 @@ fun Wishlist(navController: NavController) {
 
                 LazyColumn {
                     items(wishlistState, key = { it.id }) { wish ->
-                        WishSwipeableCard(wish = wish, onClick = {
+                        WishSwipeableCard(wish = wish, navController, onClick = {
                             scope.launch {
                                 isPopupVisible.value = true
                                 selectedWish.value = wish

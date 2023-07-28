@@ -25,6 +25,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,20 +46,27 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wishlist_android.R
+import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.currencies
 import com.example.wishlist_android.models.WishFormModel
 import com.example.wishlist_android.pages.getFileFromUri
 import com.example.wishlist_android.providers.WishFormProvider
+import com.example.wishlist_android.utils.formatImageBody
+import com.example.wishlist_android.utils.formatStringRequestBody
+import com.example.wishlist_android.utils.replaceCommaWithDot
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
 
 @SuppressLint("RememberReturnType", "Range")
 @Composable
 fun WishForm(
-    onSubmit: (String, String, String?, String, File?) -> Unit,
+    onSubmit: (RequestBody, RequestBody, RequestBody?, RequestBody, MultipartBody.Part?) -> Unit,
     buttonTitle: String,
     title: String,
     wishFormModel: WishFormModel = viewModel(),
     isLoading: Boolean,
+    wish: Wish? = null,
     children: @Composable () -> Unit,
 ) {
     wishFormModel.wishFormProvider = WishFormProvider(context = LocalContext.current)
@@ -69,7 +77,18 @@ fun WishForm(
     val link = formUiState.link
     val price = formUiState.price
 
-    var selectedCurrency by remember { mutableStateOf(if (currencies.isNotEmpty()) currencies[0] else "") }
+    LaunchedEffect(wish) {
+        if (wish != null) {
+            wishFormModel.setWishValues(wish)
+        }
+    }
+
+
+    var selectedCurrency by remember {
+        mutableStateOf(
+            wish?.currency ?: if (currencies.isNotEmpty()) currencies[0] else ""
+        )
+    }
 
     val context = LocalContext.current
 
@@ -103,7 +122,13 @@ fun WishForm(
             return
         }
 
-        onSubmit(name, price, link, selectedCurrency, image)
+        onSubmit(
+            formatStringRequestBody(name),
+            formatStringRequestBody(replaceCommaWithDot(price)),
+            if (link !== null) formatStringRequestBody(link) else null,
+            formatStringRequestBody(selectedCurrency),
+            formatImageBody(image)
+        )
 
     }
 
@@ -225,8 +250,8 @@ fun WishForm(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    if (photoUri != null) {
-                        WishImage(image = photoUri!!)
+                    if (photoUri != null || wish?.image != null) {
+                        WishImage(image = photoUri ?: wish?.image)
                     }
 
 
@@ -241,7 +266,7 @@ fun WishForm(
                         }
                     ) {
                         Text(
-                            if (photoUri == null) stringResource(R.string.add_image) else stringResource(
+                            if (photoUri == null && wish?.image == null) stringResource(R.string.add_image) else stringResource(
                                 R.string.change_image
                             ),
                             color = MaterialTheme.colorScheme.onPrimary

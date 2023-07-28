@@ -3,10 +3,6 @@ package com.example.wishlist_android.pages
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,13 +14,10 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
-import com.example.wishlist_android.components.CustomScaffold
+import com.example.wishlist_android.components.BackScaffold
 import com.example.wishlist_android.components.WishForm
-import com.example.wishlist_android.utils.formatImageBody
-import com.example.wishlist_android.utils.formatStringRequestBody
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import com.example.wishlist_android.utils.replaceCommaWithDot
 import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,18 +47,8 @@ fun AddWish(navController: NavController) {
     val context = LocalContext.current
     var isLoading by remember { mutableStateOf(false) }
 
-    CustomScaffold(
-        title = "",
-        navigationIcon = {
-            IconButton(onClick = {
-                navController.popBackStack()
-            }) {
-                Icon(
-                    Icons.Default.ArrowBackIos,
-                    contentDescription = stringResource(R.string.back_button)
-                )
-            }
-        },
+    BackScaffold(
+        navController = navController,
     ) {
         WishForm(
             onSubmit = { name, price, link, currency, image ->
@@ -77,11 +60,11 @@ fun AddWish(navController: NavController) {
                             isLoading = true
 
                             val response = wishApi.createWish(
-                                currency = formatStringRequestBody(currency),
-                                name = formatStringRequestBody(name),
-                                price = formatStringRequestBody(replaceCommaWithDot(price)),
-                                image = formatImageBody(image),
-                                link = link?.let { formatStringRequestBody(it) },
+                                currency = currency,
+                                name = name,
+                                price = price,
+                                image = image,
+                                link = link,
                             )
 
                             if (response.isSuccessful) {
@@ -105,9 +88,7 @@ fun AddWish(navController: NavController) {
             buttonTitle = stringResource(R.string.add_wish),
             title = stringResource(R.string.add_wish),
             isLoading = isLoading
-        ) {
-
-        }
+        ) {}
 
     }
 }

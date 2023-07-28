@@ -18,6 +18,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -82,4 +83,16 @@ interface WishApi {
 
     @DELETE("wish/{id}")
     suspend fun deleteWish(@Path("id") id: Int): Response<SingleWishResult>
+
+    @Multipart
+    @PATCH("wish/{id}")
+    suspend fun editWish(
+        @Path("id") id: Int,
+        @Part("currency") currency: RequestBody,
+        @Part("price") price: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part image: MultipartBody.Part?,
+        @Part("link") link: RequestBody?,
+        @Part("purchased") purchased: RequestBody
+    ): Response<SingleWishResult>
 }

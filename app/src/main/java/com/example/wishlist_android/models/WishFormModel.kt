@@ -1,6 +1,8 @@
 package com.example.wishlist_android.models
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.providers.WishFormProvider
 import com.example.wishlist_android.utils.replaceCommaWithDot
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +19,6 @@ data class WishFormState(
 
     val link: String? = null,
     val linkError: String? = null,
-
-
-// currency select
-
-//    image
 )
 
 
@@ -29,6 +26,15 @@ class WishFormModel : ViewModel() {
     private val _uiState = MutableStateFlow(WishFormState())
     val uiState: StateFlow<WishFormState> = _uiState.asStateFlow()
     var wishFormProvider: WishFormProvider? = null
+
+    fun setWishValues(wish: Wish) {
+        _uiState.value = _uiState.value.copy(
+            name = wish.name,
+            price = wish.price.toString(),
+            link = wish.link
+        )
+        Log.d("wish", _uiState.value.toString())
+    }
 
     fun checkFormValidity(): Boolean {
         val nameValid = checkNameValidity(_uiState.value.name) == null
