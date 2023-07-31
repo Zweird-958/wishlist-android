@@ -39,4 +39,7 @@
     <string name="edit_wish">Modifier votre souhait</string>
     <string name="update">Mettre à jour</string>
     <string name="bought">Acheté</string>
+    <string name="ascending_price">Prix croissant</string>
+    <string name="descending_price">Prix décroissant</string>
+    <string name="date">Date</string>
 </resources>

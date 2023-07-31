@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,6 +42,7 @@ import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.components.DeletePopUp
 import com.example.wishlist_android.components.Drawer
+import com.example.wishlist_android.components.Dropdown
 import com.example.wishlist_android.components.WishSwipeableCard
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.wishlist
@@ -50,6 +52,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun Wishlist(navController: NavController) {
+    val sortOptions = listOf(
+        stringResource(R.string.date),
+        stringResource(R.string.ascending_price),
+        stringResource(R.string.descending_price),
+    )
+
     val wishlistState = remember { mutableStateListOf<Wish>() }
     var refreshing by remember { mutableStateOf(false) }
     val isPopupVisible = remember { mutableStateOf(false) }
@@ -59,9 +67,20 @@ fun Wishlist(navController: NavController) {
     val popupScale = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
 
+    var sortMenuExpanded by remember { mutableStateOf(false) }
+    var selectedSort = remember { mutableStateOf(sortOptions[0]) }
+
     fun updateWishlist() {
         wishlistState.clear()
         wishlistState.addAll(wishlist)
+    }
+
+    fun sortWishlist(sort: String) {
+        when (sort) {
+            sortOptions[0] -> wishlistState.sortBy { it.createdAt }
+            sortOptions[1] -> wishlistState.sortBy { it.price }
+            sortOptions[2] -> wishlistState.sortByDescending { it.price }
+        }
     }
 
 
@@ -74,6 +93,7 @@ fun Wishlist(navController: NavController) {
             updateWishlist()
         }
         refreshing = false
+        sortWishlist(selectedSort.value)
     }
 
     val pullRefreshState = rememberPullRefreshState(refreshing, { refreshing = true })
@@ -111,6 +131,7 @@ fun Wishlist(navController: NavController) {
         }
 
         Box(Modifier.pullRefresh(pullRefreshState)) {
+
             if (wishlistState.isEmpty()) {
                 Box(
                     modifier = Modifier
@@ -142,6 +163,18 @@ fun Wishlist(navController: NavController) {
 
 
                 LazyColumn {
+                    item {
+                        Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                            Dropdown(
+                                selectedChoice = selectedSort,
+                                choices = sortOptions,
+                                onClick = { sort -> sortWishlist(sort) },
+                                width = 170
+                            )
+                        }
+
+                    }
+
                     items(wishlistState, key = { it.id }) { wish ->
                         WishSwipeableCard(wish = wish, navController, onClick = {
                             scope.launch {

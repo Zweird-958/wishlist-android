@@ -39,4 +39,7 @@
     <string name="edit_wish">Edit your Wish</string>
     <string name="update">Update</string>
     <string name="bought">Bought</string>
+    <string name="ascending_price">Ascending Price</string>
+    <string name="descending_price">Descending Price</string>
+    <string name="date">Date</string>
 </resources>
