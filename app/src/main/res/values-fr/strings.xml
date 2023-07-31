@@ -42,4 +42,6 @@
     <string name="ascending_price">Prix croissant</string>
     <string name="descending_price">Prix décroissant</string>
     <string name="date">Date</string>
+    <string name="all">Tous</string>
+    <string name="not_bought">Non achetés</string>
 </resources>

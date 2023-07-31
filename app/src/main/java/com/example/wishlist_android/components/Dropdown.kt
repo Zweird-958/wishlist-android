@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 fun Dropdown(
     selectedChoice: MutableState<String>,
     choices: List<String>,
-    onClick: (String) -> Unit,
+    onClick: (String) -> Unit = {},
     width: Int
 ) {
     var menuExpanded by remember { mutableStateOf(false) }

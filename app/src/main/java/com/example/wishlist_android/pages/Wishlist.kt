@@ -1,8 +1,8 @@
 package com.example.wishlist_android.pages
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,13 +49,19 @@ import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Wishlist(navController: NavController) {
+
     val sortOptions = listOf(
         stringResource(R.string.date),
         stringResource(R.string.ascending_price),
         stringResource(R.string.descending_price),
+    )
+    val filterOptions = listOf(
+        stringResource(R.string.all),
+        stringResource(R.string.bought),
+        stringResource(R.string.not_bought),
     )
 
     val wishlistState = remember { mutableStateListOf<Wish>() }
@@ -67,13 +73,8 @@ fun Wishlist(navController: NavController) {
     val popupScale = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
 
-    var sortMenuExpanded by remember { mutableStateOf(false) }
-    var selectedSort = remember { mutableStateOf(sortOptions[0]) }
-
-    fun updateWishlist() {
-        wishlistState.clear()
-        wishlistState.addAll(wishlist)
-    }
+    val selectedSort = remember { mutableStateOf(sortOptions[0]) }
+    val selectedFilter = remember { mutableStateOf(filterOptions[0]) }
 
     fun sortWishlist(sort: String) {
         when (sort) {
@@ -83,16 +84,23 @@ fun Wishlist(navController: NavController) {
         }
     }
 
+    fun filterWishlist(filter: String) {
+        wishlistState.clear()
+        when (filter) {
+            filterOptions[0] -> wishlistState.addAll(wishlist)
+            filterOptions[1] -> wishlistState.addAll(wishlist.filter { it.purchased })
+            filterOptions[2] -> wishlistState.addAll(wishlist.filter { !it.purchased })
+        }
+    }
+
 
 
     LaunchedEffect(wishlist, refreshing) {
-        if (wishlistState.size != wishlist.size) {
-            updateWishlist()
-        } else if (wishlist.isEmpty() || refreshing) {
+        if (wishlist.isEmpty() || refreshing) {
             fetchWishlist(navController, "wishlist")
-            updateWishlist()
         }
         refreshing = false
+        filterWishlist(selectedFilter.value)
         sortWishlist(selectedSort.value)
     }
 
@@ -124,7 +132,7 @@ fun Wishlist(navController: NavController) {
                 isPopupVisible = isPopupVisible,
                 popupScale = popupScale,
                 deleteLoading = deleteLoading,
-                updateWishlist = { updateWishlist() },
+                updateWishlist = { filterWishlist(selectedFilter.value) },
                 selectedWish = selectedWish,
                 navController = navController
             )
@@ -132,7 +140,7 @@ fun Wishlist(navController: NavController) {
 
         Box(Modifier.pullRefresh(pullRefreshState)) {
 
-            if (wishlistState.isEmpty()) {
+            if (wishlist.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -164,11 +172,22 @@ fun Wishlist(navController: NavController) {
 
                 LazyColumn {
                     item {
-                        Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
                             Dropdown(
                                 selectedChoice = selectedSort,
                                 choices = sortOptions,
                                 onClick = { sort -> sortWishlist(sort) },
+                                width = 170
+                            )
+                            Dropdown(
+                                selectedChoice = selectedFilter,
+                                choices = filterOptions,
+                                onClick = { filter -> filterWishlist(filter) },
                                 width = 170
                             )
                         }
