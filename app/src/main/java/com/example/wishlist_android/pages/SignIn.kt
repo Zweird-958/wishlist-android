@@ -61,7 +61,7 @@ fun SignIn(navController: NavController) {
                         }
 
                     } catch (e: Exception) {
-                        handleErrors(e, navController, "signIn", context)
+                        handleErrors(e, navController, context)
                     } finally {
                         isLoading = false
                     }

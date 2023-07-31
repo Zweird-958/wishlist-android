@@ -54,7 +54,7 @@ fun SignUp(navController: NavController) {
                             handleErrors(response, navController, "signUp")
                         }
                     } catch (e: Exception) {
-                        handleErrors(e, navController, "SignUp", context)
+                        handleErrors(e, navController, context)
                     } finally {
                         isLoading = false
                     }

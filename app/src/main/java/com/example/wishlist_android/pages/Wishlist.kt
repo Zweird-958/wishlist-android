@@ -34,6 +34,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.Dropdown
 import com.example.wishlist_android.components.WishSwipeableCard
 import com.example.wishlist_android.utils.fetchWishlist
+import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.launch
 
@@ -63,6 +65,8 @@ fun Wishlist(navController: NavController) {
         stringResource(R.string.bought),
         stringResource(R.string.not_bought),
     )
+
+    val context = LocalContext.current
 
     val wishlistState = remember { mutableStateListOf<Wish>() }
     var refreshing by remember { mutableStateOf(false) }
@@ -97,7 +101,12 @@ fun Wishlist(navController: NavController) {
 
     LaunchedEffect(wishlist, refreshing) {
         if (wishlist.isEmpty() || refreshing) {
-            fetchWishlist(navController, "wishlist")
+            try {
+                fetchWishlist(navController, "wishlist")
+
+            } catch (e: Exception) {
+                handleErrors(e, navController, context, goToRetry = true)
+            }
         }
         refreshing = false
         filterWishlist(selectedFilter.value)

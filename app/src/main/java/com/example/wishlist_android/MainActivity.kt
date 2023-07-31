@@ -21,6 +21,7 @@ import com.example.wishlist_android.pages.AddWish
 import com.example.wishlist_android.pages.EditWish
 import com.example.wishlist_android.pages.LoadingPage
 import com.example.wishlist_android.pages.Profile
+import com.example.wishlist_android.pages.Retry
 import com.example.wishlist_android.pages.Wishlist
 import com.example.wishlist_android.ui.theme.WishlistandroidTheme
 import com.example.wishlist_android.utils.getLanguage
@@ -108,6 +109,10 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("id") { type = NavType.IntType })
                         ) { backStackEntry ->
                             EditWish(navController, backStackEntry.arguments?.getInt("id"))
+                        }
+
+                        composable("retry") {
+                            Retry(navController = navController)
                         }
                     }
                 }

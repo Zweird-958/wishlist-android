@@ -77,7 +77,6 @@ fun DeletePopUp(
                 handleErrors(
                     e,
                     navController,
-                    "wishlist",
                     context = navController.context
                 )
             } finally {

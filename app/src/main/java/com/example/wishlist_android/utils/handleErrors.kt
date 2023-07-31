@@ -10,7 +10,6 @@ import org.json.JSONObject
 import retrofit2.Response
 
 fun handleErrors(response: Response<*>, navController: NavController, currentRoute: String) {
-
     val status = response.code()
     val errorMessage = response.errorBody()?.string()
     val error = JSONObject(errorMessage!!).getString("error")
@@ -33,10 +32,15 @@ fun handleErrors(response: Response<*>, navController: NavController, currentRou
 fun handleErrors(
     error: Exception,
     navController: NavController,
-    currentRoute: String,
-    context: Context
+    context: Context,
+    goToRetry: Boolean = false
 ) {
-    Toast.makeText(context, context.getString(R.string.api_error), Toast.LENGTH_SHORT).show()
+    if (goToRetry) {
+        navController.navigate("retry")
+        return
+    } else {
+        Toast.makeText(context, context.getString(R.string.api_error), Toast.LENGTH_SHORT).show()
+    }
 
 
 }

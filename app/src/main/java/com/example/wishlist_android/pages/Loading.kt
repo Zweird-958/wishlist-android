@@ -42,7 +42,7 @@ fun LoadingPage(navController: NavController) {
                     try {
                         fetchWishlist(navController, "loading", true)
                     } catch (e: Exception) {
-                        handleErrors(e, navController, "signIn", context)
+                        handleErrors(e, navController, context, goToRetry = true)
                     }
                 }
             }
@@ -50,10 +50,10 @@ fun LoadingPage(navController: NavController) {
             navigateAndClearHistory(navController, "signIn", "loading")
         }
 
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = wishApi.getCurrencies()
-                withContext(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                try {
+                    val response = wishApi.getCurrencies()
                     if (response.isSuccessful) {
                         val currenciesResult = response.body()?.result
                         if (currenciesResult != null) {
@@ -66,10 +66,10 @@ fun LoadingPage(navController: NavController) {
                             "loading"
                         )
                     }
+                } catch (e: Exception) {
+                    handleErrors(e, navController, context, goToRetry = true)
                 }
             }
-        } catch (e: Exception) {
-            handleErrors(e, navController, "signIn", context)
         }
     }
 
