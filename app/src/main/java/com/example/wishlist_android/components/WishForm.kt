@@ -7,7 +7,6 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,13 +15,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -84,7 +79,7 @@ fun WishForm(
     }
 
 
-    var selectedCurrency by remember {
+    var selectedCurrency = remember {
         mutableStateOf(
             wish?.currency ?: if (currencies.isNotEmpty()) currencies[0] else ""
         )
@@ -97,7 +92,7 @@ fun WishForm(
         remember { FocusRequester() }
     }
 
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val screenWidth = LocalConfiguration.current.screenWidthDp
     var isMenuExpanded by remember { mutableStateOf(false) }
 
     var photoUri: Uri? by remember { mutableStateOf(null) }
@@ -126,7 +121,7 @@ fun WishForm(
             formatStringRequestBody(name),
             formatStringRequestBody(replaceCommaWithDot(price)),
             if (link !== null) formatStringRequestBody(link) else null,
-            formatStringRequestBody(selectedCurrency),
+            formatStringRequestBody(selectedCurrency.value),
             formatImageBody(image)
         )
 
@@ -202,47 +197,12 @@ fun WishForm(
                     error = formUiState.linkError,
                 )
 
-
-
-                Box(modifier = Modifier.padding(vertical = 16.dp)) {
-
-                    RoundedButton(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        ),
-                        onSubmit = { isMenuExpanded = !isMenuExpanded }) {
-                        Text(
-                            text = selectedCurrency,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-
-
-                    DropdownMenu(
-                        modifier = Modifier
-                            .width(screenWidth - 64.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.secondaryContainer,
-                            ),
-                        expanded = isMenuExpanded,
-                        onDismissRequest = { isMenuExpanded = false },
-                    ) {
-
-                        for (currency in currencies) {
-                            DropdownMenuItem(
-                                onClick = {
-                                    selectedCurrency = currency
-                                    isMenuExpanded = false
-                                }
-                            ) {
-                                Text(
-                                    text = currency,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                                )
-                            }
-                        }
-                    }
-                }
+                Dropdown(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    choices = currencies,
+                    selectedChoice = selectedCurrency,
+                    width = screenWidth - 64,
+                )
 
                 Row(
                     modifier = Modifier

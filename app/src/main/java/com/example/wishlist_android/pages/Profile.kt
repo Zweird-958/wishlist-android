@@ -1,17 +1,11 @@
 package com.example.wishlist_android.pages
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +21,7 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.R
 import com.example.wishlist_android.components.Drawer
+import com.example.wishlist_android.components.Dropdown
 import com.example.wishlist_android.components.RoundedButton
 import com.example.wishlist_android.config
 import com.example.wishlist_android.token
@@ -51,50 +46,19 @@ fun Profile(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-
-            Box(modifier = Modifier.padding(vertical = 16.dp)) {
-
-                RoundedButton(
-                    modifier = Modifier
-                        .width(300.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    ),
-                    onSubmit = { isMenuExpanded = !isMenuExpanded },
-                ) {
-                    Text(
-                        text = "${currentLanguageFlag?.get("flag")} - ${currentLanguageFlag?.get("label")}",
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
-
-
-                DropdownMenu(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                        ),
-                    expanded = isMenuExpanded,
-                    onDismissRequest = { isMenuExpanded = false },
-                ) {
-
-                    for (language in languagesDisplayed.keys) {
-                        val lang = languagesDisplayed[language]
-                        DropdownMenuItem(
-                            onClick = {
-                                isMenuExpanded = false
-                                activity.setLocale(Locale(language))
-                            }
-                        ) {
-                            Text(
-                                text = "${lang?.get("flag")} - ${lang?.get("label")}",
-                                color = MaterialTheme.colorScheme.onSecondaryContainer
-                            )
-                        }
-                    }
-                }
-            }
+            Dropdown(
+                modifier = Modifier.padding(vertical = 16.dp),
+                textLabel = "${currentLanguageFlag?.get("flag")} - ${currentLanguageFlag?.get("label")}",
+                choices = languagesDisplayed.keys.toList(),
+                choicesLabel = { language ->
+                    val lang = languagesDisplayed[language]
+                    "${lang?.get("flag")} - ${lang?.get("label")}"
+                },
+                width = 300,
+                onClick = { language ->
+                    activity.setLocale(Locale(language))
+                },
+            )
 
             RoundedButton(
                 modifier = Modifier.width(300.dp),

@@ -19,24 +19,30 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Dropdown(
-    selectedChoice: MutableState<String>,
+    modifier: Modifier = Modifier,
+    buttonModifier: Modifier? = null,
+    selectedChoice: MutableState<String>? = null,
     choices: List<String>,
     onClick: (String) -> Unit = {},
-    width: Int
+    width: Int,
+    textLabel: String? = null,
+    choicesLabel: (String) -> String = { it },
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
-    Box {
+    Box(modifier = modifier) {
         RoundedButton(
-            modifier = Modifier.width(width.dp),
+            modifier = buttonModifier ?: Modifier.width(width.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
             onSubmit = { menuExpanded = !menuExpanded }) {
-            Text(
-                text = selectedChoice.value,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            (textLabel ?: selectedChoice?.value)?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
         }
 
 
@@ -53,13 +59,13 @@ fun Dropdown(
             for (choice in choices) {
                 DropdownMenuItem(
                     onClick = {
-                        onClick(choice)
-                        selectedChoice.value = choice
+                        selectedChoice?.value = choice
                         menuExpanded = false
+                        onClick(choice)
                     }
                 ) {
                     Text(
-                        text = choice,
+                        text = choicesLabel(choice),
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
