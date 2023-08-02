@@ -28,27 +28,11 @@ import kotlinx.coroutines.withContext
 @Composable
 fun LoadingPage(navController: NavController) {
     val context = LocalContext.current
-    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
 
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
-
-        if (tokenLoaded != null) {
-
-            token = tokenLoaded
-
-            CoroutineScope(Dispatchers.IO).launch {
-                withContext(Dispatchers.Main) {
-                    try {
-                        fetchWishlist(navController, "loading", true)
-                    } catch (e: Exception) {
-                        handleErrors(e, navController, context, goToRetry = true)
-                    }
-                }
-            }
-        } else {
-            navigateAndClearHistory(navController, "signIn", "loading")
-        }
+        token = tokenLoaded ?: ""
+        val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
 
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
@@ -70,6 +54,21 @@ fun LoadingPage(navController: NavController) {
                     handleErrors(e, navController, context, goToRetry = true)
                 }
             }
+        }
+
+        if (token != null) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.Main) {
+                    try {
+                        fetchWishlist(navController, "loading", true)
+                    } catch (e: Exception) {
+                        handleErrors(e, navController, context, goToRetry = true)
+                    }
+                }
+            }
+        } else {
+            navigateAndClearHistory(navController, "signIn", "loading")
         }
     }
 

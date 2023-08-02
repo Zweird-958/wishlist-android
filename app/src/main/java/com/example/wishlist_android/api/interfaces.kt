@@ -38,7 +38,7 @@ object OkHttpClientHelper {
 
                 val request = chain.request().newBuilder()
                     .addHeader("Accept-Language", language)
-                    .addHeader("Authorization", token)
+                    .addHeader("Authorization", token ?: "")
                     .build()
                 chain.proceed(request)
             }.build()
