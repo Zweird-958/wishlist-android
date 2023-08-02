@@ -103,7 +103,6 @@ fun Wishlist(navController: NavController) {
         if (wishlist.isEmpty() || refreshing) {
             try {
                 fetchWishlist(navController, "wishlist")
-
             } catch (e: Exception) {
                 handleErrors(e, navController, context, goToRetry = true)
             }
@@ -149,7 +148,7 @@ fun Wishlist(navController: NavController) {
 
         Box(Modifier.pullRefresh(pullRefreshState)) {
 
-            if (wishlist.isEmpty()) {
+            if (wishlistState.isEmpty() && selectedFilter.value == filterOptions[0]) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
