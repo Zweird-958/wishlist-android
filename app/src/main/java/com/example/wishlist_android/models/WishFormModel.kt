@@ -68,6 +68,9 @@ class WishFormModel : ViewModel() {
 
     private fun checkLinkValidity(link: String): String? {
         if (link.isNotEmpty()) {
+            if (link.contains(" ")) {
+                return wishFormProvider?.linkInvalid
+            }
 
             try {
                 val url = URL(link)
