@@ -11,7 +11,6 @@ import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserBottomRedirection
 import com.example.wishlist_android.components.UserForm
-import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
