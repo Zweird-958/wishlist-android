@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.components.DeletePopUp
@@ -47,7 +48,6 @@ import com.example.wishlist_android.components.Dropdown
 import com.example.wishlist_android.components.WishSwipeableCard
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.handleErrors
-import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.launch
 
 

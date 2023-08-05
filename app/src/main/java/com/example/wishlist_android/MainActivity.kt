@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
+import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.pages.AddWish
 import com.example.wishlist_android.pages.EditWish
 import com.example.wishlist_android.pages.LoadingPage
@@ -34,6 +35,8 @@ import java.util.Locale
 class MainActivity : ComponentActivity() {
     companion object {
         lateinit var wishApi: WishApi
+        var wishlist: MutableList<Wish> = mutableListOf()
+        var currencies: List<String> = listOf()
 
         private fun getWishApi(context: Context): WishApi {
             if (!::wishApi.isInitialized) {

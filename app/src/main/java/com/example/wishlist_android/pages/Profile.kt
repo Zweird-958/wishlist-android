@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.Dropdown
@@ -26,7 +27,6 @@ import com.example.wishlist_android.components.RoundedButton
 import com.example.wishlist_android.config
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
-import com.example.wishlist_android.wishlist
 import java.util.Locale
 
 @OptIn(ExperimentalMaterialApi::class)

@@ -2,8 +2,8 @@ package com.example.wishlist_android.utils
 
 import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.api.classes.Wish
-import com.example.wishlist_android.wishlist
 
 suspend fun fetchWishlist(
     navController: NavController,

@@ -17,7 +17,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,12 +26,10 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.RetrofitHelper
-import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.utils.handleErrors
-import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.launch
 
 @Composable
@@ -46,6 +43,7 @@ fun DeletePopUp(
 ) {
     val wishApi = MainActivity.wishApi
     val scope = rememberCoroutineScope()
+
 
     fun closePopup() {
         scope.launch {

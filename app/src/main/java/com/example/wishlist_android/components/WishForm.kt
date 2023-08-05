@@ -40,9 +40,10 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wishlist_android.MainActivity.Companion.currencies
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
-import com.example.wishlist_android.currencies
+
 import com.example.wishlist_android.models.WishFormModel
 import com.example.wishlist_android.pages.getFileFromUri
 import com.example.wishlist_android.providers.WishFormProvider
