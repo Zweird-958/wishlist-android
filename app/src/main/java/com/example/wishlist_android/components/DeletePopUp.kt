@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
-import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
@@ -41,7 +41,6 @@ fun DeletePopUp(
     selectedWish: MutableState<Wish?>,
     navController: NavController,
 ) {
-    val wishApi = MainActivity.wishApi
     val scope = rememberCoroutineScope()
 
 

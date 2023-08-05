@@ -1,7 +1,7 @@
 package com.example.wishlist_android.utils
 
 import androidx.navigation.NavController
-import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.api.classes.Wish
 
@@ -10,7 +10,6 @@ suspend fun fetchWishlist(
     currentRoute: String,
     navigateToWishlist: Boolean = false
 ) {
-    val wishApi = MainActivity.wishApi
     val response = wishApi.getWish()
 
     if (response.isSuccessful) {

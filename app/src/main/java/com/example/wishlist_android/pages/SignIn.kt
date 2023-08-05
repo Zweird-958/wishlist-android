@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserBottomRedirection
@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SignIn(navController: NavController) {
     val context = LocalContext.current
-    val wishApi = MainActivity.wishApi
     var isLoading by remember { mutableStateOf(false) }
 
     UserForm(

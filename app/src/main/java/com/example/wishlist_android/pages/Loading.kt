@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.MainActivity.Companion.currencies
+import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
 import com.example.wishlist_android.utils.handleErrors
@@ -28,8 +28,6 @@ fun LoadingPage(navController: NavController) {
 
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
-
-        val wishApi = MainActivity.wishApi
 
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {

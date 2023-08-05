@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import com.example.wishlist_android.MainActivity
+import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
@@ -25,7 +25,6 @@ import com.example.wishlist_android.components.WishForm
 import com.example.wishlist_android.utils.formatStringRequestBody
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +32,6 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun EditWish(navController: NavController, id: Int?) {
-    val wishApi = MainActivity.wishApi
     val context = LocalContext.current
 
     var isLoading by remember { mutableStateOf(false) }
