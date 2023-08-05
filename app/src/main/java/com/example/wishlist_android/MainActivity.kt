@@ -17,6 +17,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.wishlist_android.api.RetrofitHelper
+import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.pages.AddWish
 import com.example.wishlist_android.pages.EditWish
 import com.example.wishlist_android.pages.LoadingPage
@@ -30,6 +32,17 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        lateinit var wishApi: WishApi
+
+        private fun getWishApi(context: Context): WishApi {
+            if (!::wishApi.isInitialized) {
+                wishApi = RetrofitHelper.getInstance(context).create(WishApi::class.java)
+            }
+            return wishApi
+        }
+    }
+
     override fun attachBaseContext(newBase: Context?) {
         val language = getLanguage(newBase!!)
         val locale = if (language != null) Locale(language) else null
@@ -53,6 +66,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getWishApi(this)
         setContent {
             WishlistandroidTheme {
                 val backgroundColor = MaterialTheme.colorScheme.background

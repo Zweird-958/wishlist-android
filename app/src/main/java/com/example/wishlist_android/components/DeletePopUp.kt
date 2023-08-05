@@ -1,6 +1,5 @@
 package com.example.wishlist_android.components
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
+import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
@@ -34,7 +35,6 @@ import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.wishlist
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DeletePopUp(
     popupScale: Animatable<Float, AnimationVector1D>,
@@ -44,7 +44,7 @@ fun DeletePopUp(
     selectedWish: MutableState<Wish?>,
     navController: NavController,
 ) {
-    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
+    val wishApi = MainActivity.wishApi
     val scope = rememberCoroutineScope()
 
     fun closePopup() {

@@ -6,9 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.RetrofitHelper
-import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserBottomRedirection
 import com.example.wishlist_android.components.UserForm
@@ -27,7 +26,7 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SignIn(navController: NavController) {
     val context = LocalContext.current
-    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
+    val wishApi = MainActivity.wishApi
     var isLoading by remember { mutableStateOf(false) }
 
     UserForm(
@@ -53,7 +52,6 @@ fun SignIn(navController: NavController) {
                             val result = response.body()?.result
                             if (result != null) {
                                 saveToken(context, result)
-                                token = result
                                 navigateAndClearHistory(navController, "wishlist", "signIn")
                             }
                         } else {

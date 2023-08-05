@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.components.BackScaffold
 import com.example.wishlist_android.components.WishForm
@@ -32,8 +32,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun EditWish(navController: NavController, id: Int?) {
-    val wishApi =
-        RetrofitHelper.getInstance().create(com.example.wishlist_android.api.WishApi::class.java)
+    val wishApi = MainActivity.wishApi
     val context = LocalContext.current
 
     var isLoading by remember { mutableStateOf(false) }

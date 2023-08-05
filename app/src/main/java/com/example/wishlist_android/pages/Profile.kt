@@ -24,7 +24,6 @@ import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.Dropdown
 import com.example.wishlist_android.components.RoundedButton
 import com.example.wishlist_android.config
-import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
 import com.example.wishlist_android.wishlist
@@ -65,7 +64,6 @@ fun Profile(navController: NavController) {
                 onSubmit = {
                     wishlist.clear()
                     navigateAndClearHistory(navController, "signIn", "profile")
-                    token = ""
                     saveToken(navController.context, null)
                 },
             ) {

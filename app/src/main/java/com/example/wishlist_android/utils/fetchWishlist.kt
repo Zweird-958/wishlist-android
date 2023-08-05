@@ -1,8 +1,7 @@
 package com.example.wishlist_android.utils
 
 import androidx.navigation.NavController
-import com.example.wishlist_android.api.RetrofitHelper
-import com.example.wishlist_android.api.WishApi
+import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.wishlist
 
@@ -11,7 +10,7 @@ suspend fun fetchWishlist(
     currentRoute: String,
     navigateToWishlist: Boolean = false
 ) {
-    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
+    val wishApi = MainActivity.wishApi
     val response = wishApi.getWish()
 
     if (response.isSuccessful) {

@@ -11,9 +11,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.RetrofitHelper
-import com.example.wishlist_android.api.WishApi
 import com.example.wishlist_android.components.BackScaffold
 import com.example.wishlist_android.components.WishForm
 import com.example.wishlist_android.utils.handleErrors
@@ -43,8 +42,8 @@ fun getFileFromUri(uri: Uri, context: Context): File {
 
 @Composable
 fun AddWish(navController: NavController) {
-    val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
     val context = LocalContext.current
+    val wishApi = MainActivity.wishApi
     var isLoading by remember { mutableStateOf(false) }
 
     BackScaffold(

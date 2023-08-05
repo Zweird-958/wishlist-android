@@ -1,5 +1,6 @@
 package com.example.wishlist_android.api
 
+import android.content.Context
 import com.example.wishlist_android.api.classes.CurrencyResult
 import com.example.wishlist_android.api.classes.LoginResult
 import com.example.wishlist_android.api.classes.SignUpResponse
@@ -7,7 +8,7 @@ import com.example.wishlist_android.api.classes.SingleWishResult
 import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.api.classes.WishResult
 import com.example.wishlist_android.config
-import com.example.wishlist_android.token
+import com.example.wishlist_android.utils.getToken
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 object OkHttpClientHelper {
 
-    fun getInstance(): OkHttpClient {
+    fun getInstance(context: Context): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
@@ -38,7 +39,7 @@ object OkHttpClientHelper {
 
                 val request = chain.request().newBuilder()
                     .addHeader("Accept-Language", language)
-                    .addHeader("Authorization", token ?: "")
+                    .addHeader("Authorization", getToken(context) ?: "")
                     .build()
                 chain.proceed(request)
             }.build()
@@ -49,10 +50,10 @@ object RetrofitHelper {
 
     private val baseUrl = config.api.baseURL
 
-    fun getInstance(): Retrofit {
+    fun getInstance(context: Context): Retrofit {
         return Retrofit.Builder().baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClientHelper.getInstance())
+            .client(OkHttpClientHelper.getInstance(context))
             .build()
     }
 }

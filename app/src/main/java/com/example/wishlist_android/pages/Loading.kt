@@ -9,30 +9,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.wishlist_android.api.RetrofitHelper
-import com.example.wishlist_android.api.WishApi
+import com.example.wishlist_android.MainActivity
 import com.example.wishlist_android.currencies
-import com.example.wishlist_android.token
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
 import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadingPage(navController: NavController) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
-        token = tokenLoaded ?: ""
-        val wishApi = RetrofitHelper.getInstance().create(WishApi::class.java)
+
+        val wishApi = MainActivity.wishApi
 
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
@@ -56,7 +53,7 @@ fun LoadingPage(navController: NavController) {
             }
         }
 
-        if (token != null) {
+        if (tokenLoaded != null) {
 
             CoroutineScope(Dispatchers.IO).launch {
                 withContext(Dispatchers.Main) {
