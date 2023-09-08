@@ -45,4 +45,7 @@
     <string name="all">Tous</string>
     <string name="not_bought">Non achetés</string>
     <string name="retry">Réessayer</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="username_is_required">Nom d\'utilisateur est requis</string>
+    <string name="username_too_short">Votre nom d\'utilisateur doit avoir au minimum 3 caractères</string>
 </resources>

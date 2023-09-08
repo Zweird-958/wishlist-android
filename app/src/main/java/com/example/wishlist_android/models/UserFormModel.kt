@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 data class UserFormState(
+    val username: String = "",
+    val usernameError: String? = null,
+
     val email: String = "",
     val emailError: String? = null,
 
@@ -25,11 +28,17 @@ class UserFormModel : ViewModel() {
         return emailRegex.matches(email)
     }
 
-    fun checkFormValidity(): Boolean {
+    fun checkFormValidity(checkUsername: Boolean = false): Boolean {
         val emailValid = checkEmailValidity(_uiState.value.email) == null
         val passwordValid = checkPasswordValidity(_uiState.value.password) == null
 
-        return emailValid && passwordValid
+        if (!checkUsername) {
+            return emailValid && passwordValid
+        }
+
+        val usernameValid = checkUsernameValidity(_uiState.value.username) == null
+
+        return emailValid && passwordValid && usernameValid
     }
 
     private fun checkEmailValidity(email: String): String? {
@@ -73,6 +82,29 @@ class UserFormModel : ViewModel() {
         _uiState.value = _uiState.value.copy(
             password = password,
             passwordError = error
+        )
+
+        return error == null
+    }
+
+    private fun checkUsernameValidity(username: String): String? {
+        var error: String? = null
+
+        if (username.isEmpty()) {
+            error = userFormProvider?.usernameRequired
+        } else if (username.length < 3) {
+            error = userFormProvider?.usernameTooShort
+        }
+
+        return error
+    }
+
+    fun updateUsername(username: String): Boolean {
+        val error = checkUsernameValidity(username)
+
+        _uiState.value = _uiState.value.copy(
+            username = username,
+            usernameError = error
         )
 
         return error == null

@@ -30,7 +30,7 @@ fun SignUp(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
 
     UserForm(
-        onSubmit = { email, password ->
+        onSubmit = { email, password, username ->
 
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Main) {
@@ -41,7 +41,8 @@ fun SignUp(navController: NavController) {
                         val response = wishApi.signUp(
                             UserFormBody(
                                 email = email,
-                                password = password
+                                password = password,
+                                username = username
                             )
                         )
 
@@ -64,6 +65,7 @@ fun SignUp(navController: NavController) {
         buttonTitle = stringResource(R.string.sign_up),
         title = stringResource(R.string.sign_up_title),
         isLoading = isLoading,
+        showUsername = true,
     ) {}
 
     UserBottomRedirection(

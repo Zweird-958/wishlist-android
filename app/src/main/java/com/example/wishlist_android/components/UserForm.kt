@@ -36,11 +36,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 @OptIn(ExperimentalComposeUiApi::class, DelicateCoroutinesApi::class)
 @Composable
 fun UserForm(
-    onSubmit: (String, String) -> Unit,
+    onSubmit: (String, String, String) -> Unit,
     buttonTitle: String,
     title: String,
     userFormModel: UserFormModel = viewModel(),
     isLoading: Boolean,
+    showUsername: Boolean = false,
     children: @Composable () -> Unit,
 ) {
     userFormModel.userFormProvider = UserFormProvider(context = LocalContext.current)
@@ -48,7 +49,9 @@ fun UserForm(
     val formUiState by userFormModel.uiState.collectAsState()
     val email = formUiState.email
     val password = formUiState.password
+    val username = formUiState.username
 
+    val usernameFocusRequester = remember { FocusRequester() }
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
@@ -57,11 +60,11 @@ fun UserForm(
     fun handleSubmit() {
         focusManager.clearFocus()
 
-        if (!userFormModel.checkFormValidity()) {
+        if (!userFormModel.checkFormValidity(showUsername)) {
             return@handleSubmit
         }
 
-        onSubmit(email, password)
+        onSubmit(email, password, username)
 
     }
 
@@ -92,6 +95,24 @@ fun UserForm(
                 },
                 isLoading = isLoading,
             ) {
+                if (showUsername) {
+                    FormField(
+                        modifier = Modifier.focusRequester(usernameFocusRequester),
+                        label = stringResource(R.string.username),
+                        initialValue = username,
+                        onValueChange = { userFormModel.updateUsername(it) },
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.None,
+                            autoCorrect = false,
+                            imeAction = ImeAction.Next,
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = { emailFocusRequester.requestFocus() },
+                        ),
+                        error = formUiState.usernameError,
+                    )
+                }
+
                 FormField(
                     modifier = Modifier.focusRequester(emailFocusRequester),
                     label = stringResource(R.string.email),
@@ -108,6 +129,7 @@ fun UserForm(
                     ),
                     error = formUiState.emailError,
                 )
+
                 PasswordTextField(
                     modifier = Modifier.focusRequester(passwordFocusRequester),
                     initialValue = password,

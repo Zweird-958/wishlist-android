@@ -31,7 +31,7 @@ fun SignIn(navController: NavController) {
         title = stringResource(R.string.sign_in_title),
         buttonTitle = stringResource(R.string.sign_in),
         isLoading = isLoading,
-        onSubmit = { email, password ->
+        onSubmit = { email, password, _ ->
 
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Main) {

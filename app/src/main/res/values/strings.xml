@@ -17,7 +17,7 @@
     <string name="email_required">Email is required</string>
     <string name="invalid_email">Invalid email</string>
     <string name="password_required">Password is required</string>
-    <string name="password_too_short">Password must have 8 characters</string>
+    <string name="password_too_short">Password must have 8 characters or more</string>
     <string name="wishlist_empty">Your wishlist is empty!</string>
     <string name="profile">Profile</string>
     <string name="wishlist">Wishlist</string>
@@ -45,4 +45,7 @@
     <string name="all">All</string>
     <string name="not_bought">Not Bought</string>
     <string name="retry">Retry</string>
+    <string name="username">Username</string>
+    <string name="username_is_required">Username is required</string>
+    <string name="username_too_short">Username must have 3 characters or more</string>
 </resources>
