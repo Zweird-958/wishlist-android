@@ -11,10 +11,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,15 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.wishlist_android.config
+import com.example.wishlist_android.R
+import com.example.wishlist_android.classes.DrawerItem
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalMaterialApi
 @Composable
 fun Drawer(
@@ -48,7 +48,7 @@ fun Drawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(navController, drawerState, scope)
+            DrawerContent(navController)
         },
         content = {
             CustomScaffold(
@@ -74,14 +74,15 @@ fun Drawer(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrawerContent(
     navController: NavController,
-    drawerState: DrawerState,
-    coroutineScope: CoroutineScope
 ) {
-    val drawerItems = config.drawerItems
+    val drawerItems = listOf(
+        DrawerItem(stringResource(R.string.wishlist), "wishlist", Icons.Default.Favorite),
+        DrawerItem(stringResource(R.string.profile), "profile", Icons.Default.AccountCircle),
+    )
+
     ModalDrawerSheet(
         modifier = Modifier.width(200.dp),
         drawerContainerColor = MaterialTheme.colorScheme.background,
