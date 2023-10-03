@@ -98,6 +98,10 @@ fun Wishlist(navController: NavController, userId: Int?) {
     }
 
     fun filterWishlist(filter: String) {
+        if (userId == null) {
+            currentWishlist.clear()
+            currentWishlist.addAll(wishlist)
+        }
         wishlistState.clear()
         when (filter) {
             filterOptions[0] -> wishlistState.addAll(currentWishlist)
