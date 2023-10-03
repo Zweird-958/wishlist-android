@@ -98,10 +98,6 @@ fun Wishlist(navController: NavController, userId: Int?) {
     }
 
     fun filterWishlist(filter: String) {
-        if (userId == null) {
-            currentWishlist.clear()
-            currentWishlist.addAll(wishlist)
-        }
         wishlistState.clear()
         when (filter) {
             filterOptions[0] -> wishlistState.addAll(currentWishlist)
@@ -161,20 +157,22 @@ fun Wishlist(navController: NavController, userId: Int?) {
         title = title.value,
         navController = navController,
         floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                onClick = {
-                    navController.navigate("addWish")
-                },
-                modifier = Modifier
-                    .padding(16.dp),
-            ) {
-                Icon(
-                    modifier = Modifier.size(26.dp),
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.add_wish),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
+            if (userId == null) {
+                FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                        navController.navigate("addWish")
+                    },
+                    modifier = Modifier
+                        .padding(16.dp),
+                ) {
+                    Icon(
+                        modifier = Modifier.size(26.dp),
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.add_wish),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
         }) {
 
@@ -183,7 +181,11 @@ fun Wishlist(navController: NavController, userId: Int?) {
                 isPopupVisible = isPopupVisible,
                 popupScale = popupScale,
                 deleteLoading = deleteLoading,
-                updateWishlist = { filterWishlist(selectedFilter.value) },
+                updateWishlist = {
+                    currentWishlist.clear()
+                    currentWishlist.addAll(wishlist)
+                    filterWishlist(selectedFilter.value)
+                },
                 selectedWish = selectedWish,
                 navController = navController
             )
