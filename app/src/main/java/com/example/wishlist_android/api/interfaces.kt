@@ -1,11 +1,16 @@
 package com.example.wishlist_android.api
 
 import android.content.Context
+import com.example.wishlist_android.api.classes.ApiResponse
 import com.example.wishlist_android.api.classes.CurrencyResult
 import com.example.wishlist_android.api.classes.LoginResult
+import com.example.wishlist_android.api.classes.ShareResult
+import com.example.wishlist_android.api.classes.ShareWishlistBody
 import com.example.wishlist_android.api.classes.SignUpResponse
 import com.example.wishlist_android.api.classes.SingleWishResult
+import com.example.wishlist_android.api.classes.User
 import com.example.wishlist_android.api.classes.UserFormBody
+import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.api.classes.WishResult
 import com.example.wishlist_android.config
 import com.example.wishlist_android.utils.getToken
@@ -96,4 +101,13 @@ interface WishApi {
         @Part("link") link: RequestBody?,
         @Part("purchased") purchased: RequestBody
     ): Response<SingleWishResult>
+
+    @GET("share/wish")
+    suspend fun getSharedUsers(): Response<ApiResponse<List<User>?>>
+
+    @POST("share/wish")
+    suspend fun addSharedUser(@Body shareRequest: ShareWishlistBody): Response<ShareResult>
+
+    @GET("share/wish/{id}")
+    suspend fun getSharedWish(@Path("id") id: Int): Response<ApiResponse<List<Wish>>>
 }

@@ -48,4 +48,9 @@
     <string name="username">Username</string>
     <string name="username_is_required">Username is required</string>
     <string name="username_too_short">Username must have 3 characters or more</string>
+    <string name="wishlist_shared">Wishlist shared</string>
+    <string name="wishlist_shared_title">%1$s\'s Wishlist</string>
+    <string name="usernametoshare">Username to share with</string>
+    <string name="add_user">Add user</string>
+    <string name="this_wishlist_is_empty">This wishlist is empty</string>
 </resources>

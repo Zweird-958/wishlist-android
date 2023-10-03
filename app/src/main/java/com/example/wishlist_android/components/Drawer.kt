@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -81,6 +82,7 @@ fun DrawerContent(
     val drawerItems = listOf(
         DrawerItem(stringResource(R.string.wishlist), "wishlist", Icons.Default.Favorite),
         DrawerItem(stringResource(R.string.profile), "profile", Icons.Default.AccountCircle),
+        DrawerItem(stringResource(R.string.wishlist_shared), "wishlistShared", Icons.Default.Share),
     )
 
     ModalDrawerSheet(

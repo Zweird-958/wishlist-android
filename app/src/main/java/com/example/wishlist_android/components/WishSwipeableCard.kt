@@ -80,9 +80,12 @@ fun WishSwipeableCard(wish: Wish, navController: NavController, onClick: () -> U
 
     ) {
         WishCard(
-            modifier = Modifier.offset { IntOffset(offsetX.value.roundToInt(), 0) },
+            modifier = Modifier
+                .offset { IntOffset(offsetX.value.roundToInt(), 0) }
+                .clickable {
+                    navController.navigate("wish/${wish.id}")
+                },
             wish = wish,
-            navController = navController
         )
         Card(
             modifier = Modifier

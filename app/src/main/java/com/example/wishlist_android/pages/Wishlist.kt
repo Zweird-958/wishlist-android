@@ -1,5 +1,6 @@
 package com.example.wishlist_android.pages
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -39,21 +40,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.components.DeletePopUp
 import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.Dropdown
+import com.example.wishlist_android.components.WishCard
 import com.example.wishlist_android.components.WishSwipeableCard
+import com.example.wishlist_android.utils.api
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.handleErrors
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Wishlist(navController: NavController) {
+fun Wishlist(navController: NavController, userId: Int?) {
 
     val sortOptions = listOf(
         stringResource(R.string.date),
@@ -68,6 +71,10 @@ fun Wishlist(navController: NavController) {
 
     val context = LocalContext.current
 
+    val currentWishlist = remember {
+        mutableStateListOf<Wish>()
+    }
+
     val wishlistState = remember { mutableStateListOf<Wish>() }
     var refreshing by remember { mutableStateOf(false) }
     val isPopupVisible = remember { mutableStateOf(false) }
@@ -80,6 +87,8 @@ fun Wishlist(navController: NavController) {
     val selectedSort = remember { mutableStateOf(sortOptions[0]) }
     val selectedFilter = remember { mutableStateOf(filterOptions[0]) }
 
+    val title = remember { mutableStateOf(context.getString(R.string.wishlist)) }
+
     fun sortWishlist(sort: String) {
         when (sort) {
             sortOptions[0] -> wishlistState.sortBy { it.createdAt }
@@ -91,18 +100,48 @@ fun Wishlist(navController: NavController) {
     fun filterWishlist(filter: String) {
         wishlistState.clear()
         when (filter) {
-            filterOptions[0] -> wishlistState.addAll(wishlist)
-            filterOptions[1] -> wishlistState.addAll(wishlist.filter { it.purchased })
-            filterOptions[2] -> wishlistState.addAll(wishlist.filter { !it.purchased })
+            filterOptions[0] -> wishlistState.addAll(currentWishlist)
+            filterOptions[1] -> wishlistState.addAll(currentWishlist.filter { it.purchased })
+            filterOptions[2] -> wishlistState.addAll(currentWishlist.filter { !it.purchased })
         }
     }
 
-
-
-    LaunchedEffect(wishlist, refreshing) {
-        if (wishlist.isEmpty() || refreshing) {
+    LaunchedEffect(currentWishlist, refreshing) {
+        if (currentWishlist.isEmpty() || refreshing) {
             try {
-                fetchWishlist(navController, "wishlist")
+                if (userId == null) {
+                    fetchWishlist(navController, "wishlist")
+                    currentWishlist.clear()
+                    currentWishlist.addAll(wishlist)
+                } else {
+                    val response = api(
+                        response = wishApi.getSharedWish(userId),
+                        context = context,
+                        navController = navController,
+                        currentRoute = "wishlist"
+                    )
+                    if (response.result != null) {
+                        currentWishlist.clear()
+                        currentWishlist.addAll(response.result)
+                        Log.d("Wishlist", "Wishlist: ${wishlistState.size}")
+                    }
+
+                    val users = api(
+                        response = wishApi.getSharedUsers(),
+                        context = context,
+                        navController = navController,
+                        currentRoute = "wishlist"
+                    )
+
+                    if (users.result != null) {
+                        val user = users.result.find { it.id == userId }
+                        if (user != null) {
+                            title.value =
+                                context.getString(R.string.wishlist_shared_title, user.username)
+                        }
+                    }
+
+                }
             } catch (e: Exception) {
                 handleErrors(e, navController, context, goToRetry = true)
             }
@@ -115,7 +154,7 @@ fun Wishlist(navController: NavController) {
     val pullRefreshState = rememberPullRefreshState(refreshing, { refreshing = true })
 
     Drawer(
-        title = stringResource(R.string.wishlist),
+        title = title.value,
         navController = navController,
         floatingActionButton = {
             FloatingActionButton(
@@ -165,7 +204,9 @@ fun Wishlist(navController: NavController) {
                         ),
                     ) {
                         Text(
-                            text = stringResource(R.string.wishlist_empty),
+                            text = if (userId == null) stringResource(R.string.wishlist_empty) else stringResource(
+                                R.string.this_wishlist_is_empty
+                            ),
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
@@ -203,13 +244,23 @@ fun Wishlist(navController: NavController) {
                     }
 
                     items(wishlistState, key = { it.id }) { wish ->
-                        WishSwipeableCard(wish = wish, navController, onClick = {
-                            scope.launch {
-                                isPopupVisible.value = true
-                                selectedWish.value = wish
-                                popupScale.animateTo(1f, animationSpec = tween(300))
-                            }
-                        })
+                        if (userId == null) {
+                            WishSwipeableCard(wish = wish, navController, onClick = {
+                                scope.launch {
+                                    isPopupVisible.value = true
+                                    selectedWish.value = wish
+                                    popupScale.animateTo(1f, animationSpec = tween(300))
+                                }
+                            })
+                        } else {
+                            WishCard(
+                                modifier = Modifier.padding(
+                                    horizontal = 16.dp,
+                                    vertical = 8.dp
+                                ),
+                                wish = wish
+                            )
+                        }
                     }
                 }
             }

@@ -26,6 +26,7 @@ import com.example.wishlist_android.pages.LoadingPage
 import com.example.wishlist_android.pages.Profile
 import com.example.wishlist_android.pages.Retry
 import com.example.wishlist_android.pages.Wishlist
+import com.example.wishlist_android.pages.WishlistShared
 import com.example.wishlist_android.ui.theme.WishlistandroidTheme
 import com.example.wishlist_android.utils.getLanguage
 import com.example.wishlist_android.utils.saveLanguage
@@ -110,7 +111,10 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("wishlist") {
-                            Wishlist(navController = navController)
+                            Wishlist(
+                                navController = navController,
+                                userId = null
+                            )
                         }
 
                         composable("profile") {
@@ -121,11 +125,25 @@ class MainActivity : ComponentActivity() {
                             AddWish(navController = navController)
                         }
 
+                        composable("wishlistShared") {
+                            WishlistShared(navController = navController)
+                        }
+
                         composable(
                             "wish/{id}",
                             arguments = listOf(navArgument("id") { type = NavType.IntType })
                         ) { backStackEntry ->
                             EditWish(navController, backStackEntry.arguments?.getInt("id"))
+                        }
+
+                        composable(
+                            "wishlist/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            Wishlist(
+                                navController = navController,
+                                userId = backStackEntry.arguments?.getInt("id")
+                            )
                         }
 
                         composable("retry") {

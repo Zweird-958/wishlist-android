@@ -1,6 +1,5 @@
 package com.example.wishlist_android.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,21 +19,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
 import com.example.wishlist_android.utils.openWebPage
 
 @Composable
-fun WishCard(modifier: Modifier = Modifier, wish: Wish, navController: NavController) {
+fun WishCard(modifier: Modifier = Modifier, wish: Wish) {
     val context = LocalContext.current
 
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .clickable {
-                navController.navigate("wish/${wish.id}")
-            },
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         ),
