@@ -1,6 +1,5 @@
 package com.example.wishlist_android.pages
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -71,10 +70,6 @@ fun Wishlist(navController: NavController, userId: Int?) {
 
     val context = LocalContext.current
 
-    val currentWishlist = remember {
-        mutableStateListOf<Wish>()
-    }
-
     val wishlistState = remember { mutableStateListOf<Wish>() }
     var refreshing by remember { mutableStateOf(false) }
     val isPopupVisible = remember { mutableStateOf(false) }
@@ -97,7 +92,7 @@ fun Wishlist(navController: NavController, userId: Int?) {
         }
     }
 
-    fun filterWishlist(filter: String) {
+    fun filterWishlist(filter: String, currentWishlist: List<Wish> = wishlist) {
         wishlistState.clear()
         when (filter) {
             filterOptions[0] -> wishlistState.addAll(currentWishlist)
@@ -106,49 +101,55 @@ fun Wishlist(navController: NavController, userId: Int?) {
         }
     }
 
-    LaunchedEffect(currentWishlist, refreshing) {
-        if (currentWishlist.isEmpty() || refreshing) {
-            try {
-                if (userId == null) {
-                    fetchWishlist(navController, "wishlist")
-                    currentWishlist.clear()
-                    currentWishlist.addAll(wishlist)
-                } else {
-                    val response = api(
-                        response = wishApi.getSharedWish(userId),
-                        context = context,
-                        navController = navController,
-                        currentRoute = "wishlist"
-                    )
-                    if (response.result != null) {
-                        currentWishlist.clear()
-                        currentWishlist.addAll(response.result)
-                        Log.d("Wishlist", "Wishlist: ${wishlistState.size}")
-                    }
+//    Shared Wishlist
 
-                    val users = api(
-                        response = wishApi.getSharedUsers(),
-                        context = context,
-                        navController = navController,
-                        currentRoute = "wishlist"
-                    )
+    if (userId != null) {
 
-                    if (users.result != null) {
-                        val user = users.result.find { it.id == userId }
-                        if (user != null) {
-                            title.value =
-                                context.getString(R.string.wishlist_shared_title, user.username)
-                        }
-                    }
-
-                }
-            } catch (e: Exception) {
-                handleErrors(e, navController, context, goToRetry = true)
+        LaunchedEffect(refreshing) {
+            val response = api(
+                response = wishApi.getSharedWish(userId),
+                context = context,
+                navController = navController,
+                currentRoute = "wishlist"
+            )
+            if (response.result != null) {
+                filterWishlist(selectedFilter.value, response.result)
             }
+
+            val users = api(
+                response = wishApi.getSharedUsers(),
+                context = context,
+                navController = navController,
+                currentRoute = "wishlist"
+            )
+
+            if (users.result != null) {
+                val user = users.result.find { it.id == userId }
+                if (user != null) {
+                    title.value =
+                        context.getString(R.string.wishlist_shared_title, user.username)
+                }
+            }
+
+
         }
         refreshing = false
-        filterWishlist(selectedFilter.value)
         sortWishlist(selectedSort.value)
+    }
+//    User Wishlist
+    else {
+        LaunchedEffect(wishlist, refreshing) {
+            if (wishlist.isEmpty() || refreshing) {
+                try {
+                    fetchWishlist(navController, "wishlist")
+                } catch (e: Exception) {
+                    handleErrors(e, navController, context, goToRetry = true)
+                }
+            }
+            refreshing = false
+            filterWishlist(selectedFilter.value)
+            sortWishlist(selectedSort.value)
+        }
     }
 
     val pullRefreshState = rememberPullRefreshState(refreshing, { refreshing = true })
@@ -182,8 +183,6 @@ fun Wishlist(navController: NavController, userId: Int?) {
                 popupScale = popupScale,
                 deleteLoading = deleteLoading,
                 updateWishlist = {
-                    currentWishlist.clear()
-                    currentWishlist.addAll(wishlist)
                     filterWishlist(selectedFilter.value)
                 },
                 selectedWish = selectedWish,
