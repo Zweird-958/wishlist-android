@@ -34,13 +34,13 @@ fun Dropdown(
         RoundedButton(
             modifier = buttonModifier ?: Modifier.width(width.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
             ),
             onSubmit = { menuExpanded = !menuExpanded }) {
             (textLabel ?: selectedChoice?.value)?.let {
                 Text(
                     text = it,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         }
@@ -50,7 +50,7 @@ fun Dropdown(
             modifier = Modifier
                 .width(width.dp)
                 .background(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    color = MaterialTheme.colorScheme.primaryContainer,
                 ),
             expanded = menuExpanded,
             onDismissRequest = { menuExpanded = false },
@@ -66,7 +66,7 @@ fun Dropdown(
                 ) {
                     Text(
                         text = choicesLabel(choice),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }

@@ -13,22 +13,18 @@ import androidx.compose.ui.platform.LocalContext
 private val DarkColorScheme = darkColorScheme(
     primary = PrimaryBlue,
 
-    primaryContainer = LightGrey,
-    onPrimaryContainer = DarkWhite,
-    onPrimary = DarkWhite,
+    primaryContainer = Dark200,
+    onPrimaryContainer = White100,
+    onPrimary = White100,
 
-    secondary = LightGrey,
-    secondaryContainer = LightGrey,
-    onSecondaryContainer = DarkWhite,
+    tertiary = White100,
 
-    tertiary = White,
-
-    background = DarkGrey,
-    onBackground = DarkWhite,
+    background = Dark100,
+    onBackground = White100,
 
     error = ErrorColor,
     errorContainer = ErrorColorContainer,
-    onErrorContainer = DarkWhite,
+    onErrorContainer = White100,
 
 
     )
@@ -36,22 +32,18 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryBlue,
 
-    primaryContainer = DarkWhite,
-    onPrimaryContainer = DarkGrey,
-    onPrimary = DarkWhite,
+    primaryContainer = White200,
+    onPrimaryContainer = Dark300,
+    onPrimary = White100,
 
-    secondary = PurpleGrey40,
-    secondaryContainer = LightGrey2,
-    onSecondaryContainer = DarkGrey,
+    tertiary = White100,
 
-    tertiary = Grey,
-
-    background = White,
-    onBackground = LightGrey,
+    background = White50,
+    onBackground = Dark300,
 
     error = ErrorColor,
     errorContainer = ErrorColorContainer,
-    onErrorContainer = DarkWhite,
+    onErrorContainer = White100,
 
 
     /* Other default colors to override
@@ -62,6 +54,9 @@ onSecondary = Color.White,
 onTertiary = Color.White,
 onBackground = Color(0xFF1C1B1F),
 onSurface = Color(0xFF1C1B1F),
+    secondary = PurpleGrey40,
+    secondaryContainer = LightGrey2,
+    onSecondaryContainer = DarkGrey,
 */
 )
 
