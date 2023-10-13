@@ -13,7 +13,7 @@ suspend fun <T> api(
     navController: NavController,
     currentRoute: String,
 ): ApiResponse<T> {
-    return withContext(Dispatchers.IO) {
+    return withContext(Dispatchers.Main) {
         try {
             if (response.isSuccessful) {
                 response.body()!!
