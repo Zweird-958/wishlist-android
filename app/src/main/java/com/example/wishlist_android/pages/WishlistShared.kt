@@ -41,7 +41,7 @@ import com.example.wishlist_android.api.classes.ShareWishlistBody
 import com.example.wishlist_android.api.classes.User
 import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.LoaderRoundedButton
-import com.example.wishlist_android.components.UnsharePopUp
+import com.example.wishlist_android.components.PopUpFullSize
 import com.example.wishlist_android.components.UsersList
 import com.example.wishlist_android.models.ShareFormModel
 import com.example.wishlist_android.providers.ShareFormProvider
@@ -138,6 +138,7 @@ fun WishlistShared(navController: NavController) {
         } finally {
             isLoading.value = false
             popupScale.animateTo(0f, animationSpec = tween(300))
+            isPopupVisible.value = false
         }
     }
 
@@ -147,11 +148,14 @@ fun WishlistShared(navController: NavController) {
     ) {
 
         if (isPopupVisible.value) {
-            UnsharePopUp(
+            PopUpFullSize(
                 popupScale = popupScale,
                 isPopupVisible = isPopupVisible,
                 isLoading = isLoading,
-                username = userToUnshare.value?.username ?: "",
+                textContent = stringResource(
+                    R.string.unshare_user,
+                    userToUnshare.value?.username ?: ""
+                ),
             ) {
                 scope.launch {
                     unshare()

@@ -43,9 +43,9 @@ import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.Wish
-import com.example.wishlist_android.components.DeletePopUp
 import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.Dropdown
+import com.example.wishlist_android.components.PopUpFullSize
 import com.example.wishlist_android.components.WishCard
 import com.example.wishlist_android.components.WishSwipeableCard
 import com.example.wishlist_android.utils.api
@@ -99,6 +99,36 @@ fun Wishlist(navController: NavController, userId: Int?) {
             filterOptions[1] -> wishlistState.addAll(currentWishlist.filter { it.purchased })
             filterOptions[2] -> wishlistState.addAll(currentWishlist.filter { !it.purchased })
         }
+    }
+
+
+    suspend fun deleteWish() {
+        if (selectedWish.value == null) {
+            return
+        }
+
+        try {
+            deleteLoading.value = true
+            val response =
+                wishApi.deleteWish(selectedWish.value!!.id)
+            if (response.isSuccessful) {
+                wishlist.remove(selectedWish.value!!)
+                filterWishlist(selectedFilter.value)
+            } else {
+                handleErrors(response, navController, "wishlist")
+            }
+        } catch (e: Exception) {
+            handleErrors(
+                e,
+                navController,
+                context = navController.context
+            )
+        } finally {
+            deleteLoading.value = false
+            popupScale.animateTo(0f)
+            isPopupVisible.value = false
+        }
+
     }
 
 //    Shared Wishlist
@@ -178,16 +208,16 @@ fun Wishlist(navController: NavController, userId: Int?) {
         }) {
 
         if (isPopupVisible.value) {
-            DeletePopUp(
-                isPopupVisible = isPopupVisible,
+            PopUpFullSize(
                 popupScale = popupScale,
-                deleteLoading = deleteLoading,
-                updateWishlist = {
-                    filterWishlist(selectedFilter.value)
-                },
-                selectedWish = selectedWish,
-                navController = navController
-            )
+                isPopupVisible = isPopupVisible,
+                isLoading = deleteLoading,
+                textContent = stringResource(R.string.delete_pop_up_text)
+            ) {
+                scope.launch {
+                    deleteWish()
+                }
+            }
         }
 
         Box(Modifier.pullRefresh(pullRefreshState)) {

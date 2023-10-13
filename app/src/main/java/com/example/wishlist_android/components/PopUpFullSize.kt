@@ -29,11 +29,11 @@ import com.example.wishlist_android.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun UnsharePopUp(
+fun PopUpFullSize(
     popupScale: Animatable<Float, AnimationVector1D>,
     isPopupVisible: MutableState<Boolean>,
     isLoading: MutableState<Boolean>,
-    username: String,
+    textContent: String,
     onConfirm: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -45,7 +45,6 @@ fun UnsharePopUp(
             isPopupVisible.value = false
         }
     }
-
 
     Column(modifier = Modifier.fillMaxSize()) {
         Popup(
@@ -78,7 +77,7 @@ fun UnsharePopUp(
                 ) {
                     Text(
                         modifier = Modifier.padding(8.dp),
-                        text = stringResource(R.string.unshare_user, username),
+                        text = textContent,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
