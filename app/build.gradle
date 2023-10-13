@@ -25,7 +25,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
-            versionNameSuffix '1.2.3'
+            versionNameSuffix '1.2.4'
         }
     }
     compileOptions {

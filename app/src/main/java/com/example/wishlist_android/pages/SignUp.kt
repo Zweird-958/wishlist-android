@@ -3,6 +3,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -12,18 +13,14 @@ import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserBottomRedirection
 import com.example.wishlist_android.components.UserForm
-import com.example.wishlist_android.utils.handleErrors
+import com.example.wishlist_android.utils.api
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun SignUp(navController: NavController) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val successToast =
         Toast.makeText(context, stringResource(R.string.sign_up_success), Toast.LENGTH_SHORT)
 
@@ -31,33 +28,25 @@ fun SignUp(navController: NavController) {
 
     UserForm(
         onSubmit = { email, password, username ->
+            scope.launch {
+                isLoading = true
+                val response = api(
+                    response = { wishApi.signUp(UserFormBody(email, password, username)) },
+                    context = context,
+                    navController = navController,
+                    goToRetry = true,
+                    currentRoute = "signUp"
+                )
 
-            CoroutineScope(Dispatchers.Main).launch {
-                withContext(Dispatchers.Main) {
-                    try {
+                val result = response.result
 
-                        isLoading = true
+                if (result != null) {
+                    navigateAndClearHistory(navController, "signIn", "signUp")
+                    successToast.show()
 
-                        val response = wishApi.signUp(
-                            UserFormBody(
-                                email = email,
-                                password = password,
-                                username = username
-                            )
-                        )
-
-                        if (response.isSuccessful) {
-                            navigateAndClearHistory(navController, "signIn", "signUp")
-                            successToast.show()
-                        } else {
-                            handleErrors(response, navController, "signUp")
-                        }
-                    } catch (e: Exception) {
-                        handleErrors(e, navController, context)
-                    } finally {
-                        isLoading = false
-                    }
                 }
+
+                isLoading = false
 
             }
 

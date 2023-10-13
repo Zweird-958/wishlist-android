@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.utils.openWebPage
 
 @Composable

@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.classes.User
+import com.example.wishlist_android.classes.User
 
 @Composable
 fun UsersList(users: List<User>, icon: ImageVector, title: String, onClick: (User) -> Unit) {

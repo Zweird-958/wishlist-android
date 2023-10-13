@@ -1,4 +1,4 @@
-package com.example.wishlist_android.api.classes
+package com.example.wishlist_android.classes
 
 data class Wish(
 
@@ -13,13 +13,3 @@ data class Wish(
     val createdAt: String,
 
     )
-
-data class WishResult(
-    val result: List<Wish>? = null,
-    val error: String? = ""
-)
-
-data class SingleWishResult(
-    val result: Wish? = null,
-    val error: String? = ""
-)

@@ -11,59 +11,41 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity.Companion.currencies
 import com.example.wishlist_android.MainActivity.Companion.wishApi
+import com.example.wishlist_android.utils.api
 import com.example.wishlist_android.utils.fetchWishlist
 import com.example.wishlist_android.utils.getToken
-import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoadingPage(navController: NavController) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         val tokenLoaded = getToken(context = context)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.Main) {
-                try {
-                    val response = wishApi.getCurrencies()
-                    if (response.isSuccessful) {
-                        val currenciesResult = response.body()?.result
-                        if (currenciesResult != null) {
-                            currencies = currenciesResult
-                        }
-                    } else {
-                        handleErrors(
-                            response,
-                            navController,
-                            "loading"
-                        )
-                    }
-                } catch (e: Exception) {
-                    handleErrors(e, navController, context, goToRetry = true)
-                }
-            }
-        }
+        scope.launch {
+            val response = api(
+                response = { wishApi.getCurrencies() },
+                context = context,
+                navController = navController,
+                goToRetry = true,
+                currentRoute = "loading"
+            )
 
-        if (tokenLoaded != null) {
-
-            CoroutineScope(Dispatchers.IO).launch {
-                withContext(Dispatchers.Main) {
-                    try {
-                        fetchWishlist(navController, "loading", true)
-                    } catch (e: Exception) {
-                        handleErrors(e, navController, context, goToRetry = true)
-                    }
-                }
+            val currenciesResult = response.result
+            if (currenciesResult != null) {
+                currencies = currenciesResult
             }
-        } else {
-            navigateAndClearHistory(navController, "signIn", "loading")
+
+            if (tokenLoaded != null) {
+                fetchWishlist(navController, "loading", true)
+            } else {
+                navigateAndClearHistory(navController, "signIn", "loading")
+            }
+
         }
     }
 

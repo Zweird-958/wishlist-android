@@ -3,27 +3,30 @@ package com.example.wishlist_android.utils
 import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 
 suspend fun fetchWishlist(
     navController: NavController,
     currentRoute: String,
     navigateToWishlist: Boolean = false
 ) {
-    val response = wishApi.getWish()
 
-    if (response.isSuccessful) {
-        val result = response.body()?.result
+    val response = api(
+        response = { wishApi.getWish() },
+        context = navController.context,
+        navController = navController,
+        goToRetry = true,
+        currentRoute = "loading"
+    )
 
-        if (result != null) {
-            wishlist = result as MutableList<Wish>
-        }
+    val result = response.result
 
-        if (navigateToWishlist) {
-            navigateAndClearHistory(navController, "wishlist", currentRoute)
-        }
-
-    } else {
-        handleErrors(response, navController, currentRoute)
+    if (result != null) {
+        wishlist = result as MutableList<Wish>
     }
+
+    if (navigateToWishlist) {
+        navigateAndClearHistory(navController, "wishlist", currentRoute)
+    }
+
 }

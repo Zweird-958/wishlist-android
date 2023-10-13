@@ -2,16 +2,12 @@ package com.example.wishlist_android.api
 
 import android.content.Context
 import com.example.wishlist_android.api.classes.ApiResponse
-import com.example.wishlist_android.api.classes.CurrencyResult
-import com.example.wishlist_android.api.classes.LoginResult
 import com.example.wishlist_android.api.classes.ShareResult
 import com.example.wishlist_android.api.classes.ShareWishlistBody
-import com.example.wishlist_android.api.classes.SignUpResponse
-import com.example.wishlist_android.api.classes.SingleWishResult
-import com.example.wishlist_android.api.classes.User
+import com.example.wishlist_android.api.classes.SignUpResult
 import com.example.wishlist_android.api.classes.UserFormBody
-import com.example.wishlist_android.api.classes.Wish
-import com.example.wishlist_android.api.classes.WishResult
+import com.example.wishlist_android.classes.User
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.config
 import com.example.wishlist_android.utils.getToken
 import okhttp3.MultipartBody
@@ -66,13 +62,13 @@ object RetrofitHelper {
 interface WishApi {
 
     @POST("/sign-in")
-    suspend fun signIn(@Body loginRequest: UserFormBody): Response<LoginResult>
+    suspend fun signIn(@Body loginRequest: UserFormBody): Response<ApiResponse<String>>
 
     @POST("/sign-up")
-    suspend fun signUp(@Body loginRequest: UserFormBody): Response<SignUpResponse>
+    suspend fun signUp(@Body loginRequest: UserFormBody): Response<ApiResponse<SignUpResult>>
 
     @GET("/wish")
-    suspend fun getWish(): Response<WishResult>
+    suspend fun getWish(): Response<ApiResponse<List<Wish?>>>
 
     @Multipart
     @POST("wish")
@@ -82,13 +78,13 @@ interface WishApi {
         @Part("name") name: RequestBody,
         @Part image: MultipartBody.Part?,
         @Part("link") link: RequestBody?
-    ): Response<SingleWishResult>
+    ): Response<ApiResponse<Wish?>>
 
     @GET("currency")
-    suspend fun getCurrencies(): Response<CurrencyResult>
+    suspend fun getCurrencies(): Response<ApiResponse<List<String>>>
 
     @DELETE("wish/{id}")
-    suspend fun deleteWish(@Path("id") id: Int): Response<SingleWishResult>
+    suspend fun deleteWish(@Path("id") id: Int): Response<ApiResponse<Wish>>
 
     @Multipart
     @PATCH("wish/{id}")
@@ -100,7 +96,7 @@ interface WishApi {
         @Part image: MultipartBody.Part?,
         @Part("link") link: RequestBody?,
         @Part("purchased") purchased: RequestBody
-    ): Response<SingleWishResult>
+    ): Response<ApiResponse<Wish>>
 
     @GET("share/wish")
     suspend fun getSharedUsers(): Response<ApiResponse<List<User>?>>

@@ -10,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,20 +20,18 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.components.BackScaffold
 import com.example.wishlist_android.components.WishForm
+import com.example.wishlist_android.utils.api
 import com.example.wishlist_android.utils.formatStringRequestBody
-import com.example.wishlist_android.utils.handleErrors
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 fun EditWish(navController: NavController, id: Int?) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     var isLoading by remember { mutableStateOf(false) }
     val wish = wishlist.find { it.id == id }
@@ -47,13 +46,12 @@ fun EditWish(navController: NavController, id: Int?) {
     BackScaffold(navController = navController) {
         WishForm(
             onSubmit = { name, price, link, currency, image ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    withContext(Dispatchers.Main) {
+                scope.launch {
+                    isLoading = true
 
-                        try {
-                            isLoading = true
-
-                            val response = wishApi.editWish(
+                    val response = api(
+                        response = {
+                            wishApi.editWish(
                                 id = id!!,
                                 currency = currency,
                                 name = name,
@@ -62,30 +60,27 @@ fun EditWish(navController: NavController, id: Int?) {
                                 link = link,
                                 purchased = formatStringRequestBody(purchased.toString())
                             )
+                        },
+                        context = context,
+                        navController = navController,
+                        currentRoute = "editWish"
+                    )
 
-                            if (response.isSuccessful) {
-                                val result = response.body()?.result
-                                if (result != null) {
-                                    wishlist = wishlist.map { wish ->
-                                        if (wish.id == id) {
-                                            result
-                                        } else {
-                                            wish
-                                        }
-                                    } as MutableList<Wish>
-                                }
 
-                                navigateAndClearHistory(navController, "wishlist", "editWish")
+                    val result = response.result
+                    if (result != null) {
+                        wishlist = wishlist.map { wish ->
+                            if (wish.id == id) {
+                                result
                             } else {
-                                handleErrors(response, navController, "editWish")
+                                wish
                             }
-
-                        } catch (e: Exception) {
-                            handleErrors(e, navController, context)
-                        } finally {
-                            isLoading = false
-                        }
+                        } as MutableList<Wish>
                     }
+
+                    navigateAndClearHistory(navController, "wishlist", "editWish")
+
+                    isLoading = false
                 }
             },
             buttonTitle = stringResource(R.string.update),

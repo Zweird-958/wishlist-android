@@ -2,7 +2,7 @@ package com.example.wishlist_android.models
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.providers.WishFormProvider
 import com.example.wishlist_android.utils.replaceCommaWithDot
 import kotlinx.coroutines.flow.MutableStateFlow

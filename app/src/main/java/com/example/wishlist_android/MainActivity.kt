@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wishlist_android.api.RetrofitHelper
 import com.example.wishlist_android.api.WishApi
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.pages.AddWish
 import com.example.wishlist_android.pages.EditWish
 import com.example.wishlist_android.pages.LoadingPage

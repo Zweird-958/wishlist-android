@@ -42,7 +42,7 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.Dropdown
 import com.example.wishlist_android.components.PopUpFullSize
@@ -107,27 +107,26 @@ fun Wishlist(navController: NavController, userId: Int?) {
             return
         }
 
-        try {
-            deleteLoading.value = true
-            val response =
-                wishApi.deleteWish(selectedWish.value!!.id)
-            if (response.isSuccessful) {
-                wishlist.remove(selectedWish.value!!)
-                filterWishlist(selectedFilter.value)
-            } else {
-                handleErrors(response, navController, "wishlist")
-            }
-        } catch (e: Exception) {
-            handleErrors(
-                e,
-                navController,
-                context = navController.context
-            )
-        } finally {
-            deleteLoading.value = false
-            popupScale.animateTo(0f)
-            isPopupVisible.value = false
+
+        deleteLoading.value = true
+        val response = api(
+            response = { wishApi.deleteWish(selectedWish.value!!.id) },
+            context = context,
+            navController = navController,
+            currentRoute = "wishlist"
+        )
+
+        val wish = response.result
+
+        if (wish != null) {
+            wishlist.remove(wish)
+            filterWishlist(selectedFilter.value)
         }
+
+        deleteLoading.value = false
+        popupScale.animateTo(0f)
+        isPopupVisible.value = false
+
 
     }
 
@@ -137,7 +136,7 @@ fun Wishlist(navController: NavController, userId: Int?) {
 
         LaunchedEffect(refreshing) {
             val response = api(
-                response = wishApi.getSharedWish(userId),
+                response = { wishApi.getSharedWish(userId) },
                 context = context,
                 navController = navController,
                 currentRoute = "wishlist"
@@ -147,7 +146,7 @@ fun Wishlist(navController: NavController, userId: Int?) {
             }
 
             val users = api(
-                response = wishApi.getSharedUsers(),
+                response = { wishApi.getSharedUsers() },
                 context = context,
                 navController = navController,
                 currentRoute = "wishlist"

@@ -38,18 +38,15 @@ import androidx.navigation.NavController
 import com.example.wishlist_android.MainActivity.Companion.wishApi
 import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.ShareWishlistBody
-import com.example.wishlist_android.api.classes.User
+import com.example.wishlist_android.classes.User
 import com.example.wishlist_android.components.Drawer
 import com.example.wishlist_android.components.LoaderRoundedButton
 import com.example.wishlist_android.components.PopUpFullSize
 import com.example.wishlist_android.components.UsersList
 import com.example.wishlist_android.models.ShareFormModel
 import com.example.wishlist_android.providers.ShareFormProvider
-import com.example.wishlist_android.utils.handleErrors
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.wishlist_android.utils.api
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @SuppressLint("MutableCollectionMutableState")
 @OptIn(ExperimentalMaterialApi::class)
@@ -72,44 +69,52 @@ fun WishlistShared(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(users, usersSharedWith) {
-        val response = wishApi.getSharedUsers()
-        if (response.isSuccessful) {
+        val response = api(
+            response = { wishApi.getSharedUsers() },
+            context,
+            navController,
+            "wishlistShared"
+        )
+        val result = response.result
+        if (result != null) {
             users.clear()
-            val usersResult = response.body()?.result
-            if (usersResult != null) {
-                users.addAll(usersResult)
+            if (result != null) {
+                users.addAll(result)
             }
-        } else {
-            handleErrors(response, navController, "wishlistShared")
         }
 
-        val responseSharedWith = wishApi.getUsersSharedWith()
-        if (responseSharedWith.isSuccessful) {
+        val responseSharedWith = api(
+            response = { wishApi.getUsersSharedWith() },
+            context,
+            navController,
+            "wishlistShared"
+        )
+        val usersSharedWithResult = responseSharedWith.result
+        if (usersSharedWithResult != null) {
             usersSharedWith.clear()
-            val usersResult = responseSharedWith.body()?.result
-            if (usersResult != null) {
-                usersSharedWith.addAll(usersResult)
+            if (usersSharedWithResult != null) {
+                usersSharedWith.addAll(usersSharedWithResult)
             }
-        } else {
-            handleErrors(responseSharedWith, navController, "wishlistShared")
         }
-
     }
 
 
     fun addUser() {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.Main) {
-                val response = wishApi.addSharedUser(ShareWishlistBody(username))
-                if (response.isSuccessful) {
-                    val result = response.body()?.result
-                    Toast.makeText(context, result?.message, Toast.LENGTH_SHORT)
-                        .show()
-                    usersSharedWith.add(result?.user!!)
-                } else {
-                    handleErrors(response, navController, "wishlistShared")
-                }
+        scope.launch {
+            val response = api(
+                response = { wishApi.addSharedUser(ShareWishlistBody(username)) },
+                context = context,
+                navController = navController,
+                currentRoute = "wishlistShared"
+            )
+
+            val result = response.result
+            if (result != null) {
+                Toast.makeText(context, result.message, Toast.LENGTH_SHORT)
+                    .show()
+                usersSharedWith.add(result.user)
             }
+
         }
     }
 
@@ -118,28 +123,24 @@ fun WishlistShared(navController: NavController) {
             return
         }
 
-        try {
-            isLoading.value = true
+        isLoading.value = true
 
-            val response = wishApi.unshareWish(userToUnshare.value!!.id)
+        val response = api(
+            response = { wishApi.unshareWish(userToUnshare.value!!.id) },
+            context = context,
+            navController = navController,
+            currentRoute = "wishlistShared"
+        )
 
-            if (response.isSuccessful) {
-                val result = response.body()?.result
-                if (result != null) {
-                    usersSharedWith.remove(userToUnshare.value!!)
-                    userToUnshare.value = null
-                    Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                handleErrors(response, navController, "wishlistShared")
-            }
-        } catch (e: Exception) {
-            handleErrors(e, navController, context)
-        } finally {
-            isLoading.value = false
-            popupScale.animateTo(0f, animationSpec = tween(300))
-            isPopupVisible.value = false
+        val result = response.result
+        if (result != null) {
+            usersSharedWith.remove(userToUnshare.value!!)
+            userToUnshare.value = null
+            Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()
         }
+        isLoading.value = false
+        popupScale.animateTo(0f, animationSpec = tween(300))
+        isPopupVisible.value = false
     }
 
     Drawer(

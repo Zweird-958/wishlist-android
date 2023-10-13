@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.example.wishlist_android.R
-import com.example.wishlist_android.api.classes.Wish
+import com.example.wishlist_android.classes.Wish
 import com.example.wishlist_android.utils.dpToPx
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch

@@ -2,6 +2,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -11,20 +12,18 @@ import com.example.wishlist_android.R
 import com.example.wishlist_android.api.classes.UserFormBody
 import com.example.wishlist_android.components.UserBottomRedirection
 import com.example.wishlist_android.components.UserForm
-import com.example.wishlist_android.utils.handleErrors
+import com.example.wishlist_android.utils.api
 import com.example.wishlist_android.utils.navigateAndClearHistory
 import com.example.wishlist_android.utils.saveToken
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun SignIn(navController: NavController) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var isLoading by remember { mutableStateOf(false) }
 
     UserForm(
@@ -32,36 +31,24 @@ fun SignIn(navController: NavController) {
         buttonTitle = stringResource(R.string.sign_in),
         isLoading = isLoading,
         onSubmit = { email, password, _ ->
+            scope.launch {
+                isLoading = true
 
-            CoroutineScope(Dispatchers.Main).launch {
-                withContext(Dispatchers.Main) {
+                val response = api(
+                    response = { wishApi.signIn(UserFormBody(email, password)) },
+                    context = context,
+                    navController = navController,
+                    goToRetry = true,
+                    currentRoute = "signIn"
+                )
 
-                    try {
-                        isLoading = true
-
-                        val response = wishApi.signIn(
-                            UserFormBody(
-                                email = email,
-                                password = password
-                            )
-                        )
-
-                        if (response.isSuccessful) {
-                            val result = response.body()?.result
-                            if (result != null) {
-                                saveToken(context, result)
-                                navigateAndClearHistory(navController, "wishlist", "signIn")
-                            }
-                        } else {
-                            handleErrors(response, navController, "signIn")
-                        }
-
-                    } catch (e: Exception) {
-                        handleErrors(e, navController, context)
-                    } finally {
-                        isLoading = false
-                    }
+                val result = response.result
+                if (result != null) {
+                    saveToken(context, result)
+                    navigateAndClearHistory(navController, "wishlist", "signIn")
                 }
+
+                isLoading = false
             }
         }
     ) {}

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -16,12 +17,9 @@ import com.example.wishlist_android.MainActivity.Companion.wishlist
 import com.example.wishlist_android.R
 import com.example.wishlist_android.components.BackScaffold
 import com.example.wishlist_android.components.WishForm
-import com.example.wishlist_android.utils.handleErrors
+import com.example.wishlist_android.utils.api
 import com.example.wishlist_android.utils.navigateAndClearHistory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -44,43 +42,39 @@ fun getFileFromUri(uri: Uri, context: Context): File {
 fun AddWish(navController: NavController) {
     val context = LocalContext.current
     var isLoading by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     BackScaffold(
         navController = navController,
     ) {
         WishForm(
             onSubmit = { name, price, link, currency, image ->
+                scope.launch {
+                    isLoading = true
 
-                CoroutineScope(Dispatchers.Main).launch {
-                    withContext(Dispatchers.Main) {
-
-                        try {
-                            isLoading = true
-
-                            val response = wishApi.createWish(
+                    val response = api(
+                        response = {
+                            wishApi.createWish(
                                 currency = currency,
                                 name = name,
                                 price = price,
                                 image = image,
                                 link = link,
                             )
+                        },
+                        context,
+                        navController,
+                        "addWish"
+                    )
 
-                            if (response.isSuccessful) {
-                                val result = response.body()?.result
-                                if (result != null) {
-                                    wishlist.add(result)
-                                }
-                                navigateAndClearHistory(navController, "wishlist", "addWish")
-                            } else {
-                                handleErrors(response, navController, "addWish")
-                            }
+                    val wish = response.result
 
-                        } catch (e: Exception) {
-                            handleErrors(e, navController, context)
-                        } finally {
-                            isLoading = false
-                        }
+                    if (wish != null) {
+                        wishlist.add(wish)
+                        navigateAndClearHistory(navController, "wishlist", "addWish")
                     }
+
+                    isLoading = false
                 }
             },
             buttonTitle = stringResource(R.string.add_wish),
