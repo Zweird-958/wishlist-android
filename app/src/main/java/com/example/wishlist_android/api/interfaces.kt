@@ -106,8 +106,14 @@ interface WishApi {
     suspend fun getSharedUsers(): Response<ApiResponse<List<User>?>>
 
     @POST("share/wish")
-    suspend fun addSharedUser(@Body shareRequest: ShareWishlistBody): Response<ShareResult>
+    suspend fun addSharedUser(@Body shareRequest: ShareWishlistBody): Response<ApiResponse<ShareResult>>
 
     @GET("share/wish/{id}")
     suspend fun getSharedWish(@Path("id") id: Int): Response<ApiResponse<List<Wish>>>
+
+    @GET("share/users")
+    suspend fun getUsersSharedWith(): Response<ApiResponse<List<User>?>>
+
+    @DELETE("share/wish/{id}")
+    suspend fun unshareWish(@Path("id") id: Int): Response<ApiResponse<ShareResult>>
 }

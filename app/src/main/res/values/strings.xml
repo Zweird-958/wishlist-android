@@ -53,4 +53,6 @@
     <string name="usernametoshare">Username to share with</string>
     <string name="add_user">Add user</string>
     <string name="this_wishlist_is_empty">This wishlist is empty</string>
+    <string name="users_shared_with">Users who have access to your wishlist</string>
+    <string name="unshare_user">Are you sure you want to stop sharing your wishlist with this %1$s ?</string>
 </resources>
