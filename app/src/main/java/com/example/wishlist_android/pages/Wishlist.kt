@@ -80,7 +80,7 @@ fun Wishlist(navController: NavController, userId: Int?) {
     val scope = rememberCoroutineScope()
 
     val selectedSort = remember { mutableStateOf(sortOptions[0]) }
-    val selectedFilter = remember { mutableStateOf(filterOptions[0]) }
+    val selectedFilter = remember { mutableStateOf(filterOptions[2]) }
 
     val title = remember { mutableStateOf(context.getString(R.string.wishlist)) }
 
