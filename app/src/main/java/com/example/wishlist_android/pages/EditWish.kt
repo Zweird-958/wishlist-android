@@ -1,8 +1,11 @@
 package com.example.wishlist_android.pages
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,68 +48,73 @@ fun EditWish(navController: NavController, id: Int?) {
     }
 
     BackScaffold(navController = navController) {
-        WishForm(
-            onSubmit = { name, price, link, currency, image ->
-                scope.launch {
-                    isLoading = true
-
-                    val response = api(
-                        response = {
-                            wishApi.editWish(
-                                id = id!!,
-                                currency = currency,
-                                name = name,
-                                price = price,
-                                image = image,
-                                link = link,
-                                purchased = formatStringRequestBody(purchased.toString()),
-                                isPrivate = formatStringRequestBody(isPrivate.toString())
-                            )
-                        },
-                        context = context,
-                        navController = navController,
-                        currentRoute = "editWish"
-                    )
-
-
-                    val result = response.result
-                    if (result != null) {
-                        wishlist = wishlist.map { wish ->
-                            if (wish.id == id) {
-                                result
-                            } else {
-                                wish
-                            }
-                        } as MutableList<Wish>
-                    }
-
-                    navigateAndClearHistory(navController, "wishlist", "editWish")
-
-                    isLoading = false
-                }
-            },
-            buttonTitle = stringResource(R.string.update),
-            title = stringResource(R.string.edit_wish),
-            isLoading = isLoading,
-            wish = wish
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            WishForm(
+                onSubmit = { name, price, link, currency, image ->
+                    scope.launch {
+                        isLoading = true
+
+                        val response = api(
+                            response = {
+                                wishApi.editWish(
+                                    id = id!!,
+                                    currency = currency,
+                                    name = name,
+                                    price = price,
+                                    image = image,
+                                    link = link,
+                                    purchased = formatStringRequestBody(purchased.toString()),
+                                    isPrivate = formatStringRequestBody(isPrivate.toString())
+                                )
+                            },
+                            context = context,
+                            navController = navController,
+                            currentRoute = "editWish"
+                        )
+
+
+                        val result = response.result
+                        if (result != null) {
+                            wishlist = wishlist.map { wish ->
+                                if (wish.id == id) {
+                                    result
+                                } else {
+                                    wish
+                                }
+                            } as MutableList<Wish>
+                        }
+
+                        navigateAndClearHistory(navController, "wishlist", "editWish")
+
+                        isLoading = false
+                    }
+                },
+                buttonTitle = stringResource(R.string.update),
+                title = stringResource(R.string.edit_wish),
+                isLoading = isLoading,
+                wish = wish
             ) {
-                Text(text = stringResource(R.string.bought))
-                Switch(checked = purchased, onCheckedChange = { purchased = it })
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = stringResource(R.string.private_field))
-                Switch(checked = isPrivate, onCheckedChange = { isPrivate = it })
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = stringResource(R.string.bought))
+                    Switch(checked = purchased, onCheckedChange = { purchased = it })
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = stringResource(R.string.private_field))
+                    Switch(checked = isPrivate, onCheckedChange = { isPrivate = it })
+                }
             }
         }
     }
-
 }
