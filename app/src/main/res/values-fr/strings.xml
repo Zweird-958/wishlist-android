@@ -55,4 +55,5 @@
     <string name="this_wishlist_is_empty">Cette liste d\'envie est vide</string>
     <string name="users_shared_with">Utilisateurs qui ont accès à votre liste d\'envie</string>
     <string name="unshare_user">Êtes-vous sûr(e) de vouloir arrêter de partager votre liste d\'envie avec %1$s ?</string>
+    <string name="private_field">Privé</string>
 </resources>

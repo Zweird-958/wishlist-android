@@ -36,6 +36,7 @@ fun EditWish(navController: NavController, id: Int?) {
     var isLoading by remember { mutableStateOf(false) }
     val wish = wishlist.find { it.id == id }
     var purchased by remember { mutableStateOf(wish?.purchased ?: false) }
+    var isPrivate by remember { mutableStateOf(wish?.isPrivate ?: false) }
 
     LaunchedEffect(id) {
         if (id == null) {
@@ -58,7 +59,8 @@ fun EditWish(navController: NavController, id: Int?) {
                                 price = price,
                                 image = image,
                                 link = link,
-                                purchased = formatStringRequestBody(purchased.toString())
+                                purchased = formatStringRequestBody(purchased.toString()),
+                                isPrivate = formatStringRequestBody(isPrivate.toString())
                             )
                         },
                         context = context,
@@ -95,6 +97,14 @@ fun EditWish(navController: NavController, id: Int?) {
             ) {
                 Text(text = stringResource(R.string.bought))
                 Switch(checked = purchased, onCheckedChange = { purchased = it })
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = stringResource(R.string.private_field))
+                Switch(checked = isPrivate, onCheckedChange = { isPrivate = it })
             }
         }
     }

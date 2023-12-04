@@ -11,5 +11,6 @@ data class Wish(
     val purchased: Boolean,
     val id: Int,
     val createdAt: String,
+    val isPrivate: Boolean,
 
     )

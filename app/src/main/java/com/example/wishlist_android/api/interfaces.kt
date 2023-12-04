@@ -95,7 +95,8 @@ interface WishApi {
         @Part("name") name: RequestBody,
         @Part image: MultipartBody.Part?,
         @Part("link") link: RequestBody?,
-        @Part("purchased") purchased: RequestBody
+        @Part("purchased") purchased: RequestBody,
+        @Part("isPrivate") isPrivate: RequestBody
     ): Response<ApiResponse<Wish>>
 
     @GET("share/wish")
